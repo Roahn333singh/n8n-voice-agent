@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="#0F172A" width="1600" height="1040" viewBox="0 0 1600 1040">
+  <defs>
+    <marker id="arrRed" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 z" fill="#DC2626"/></marker>
+    <marker id="arrGreen" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 z" fill="#059669"/></marker>
+    <marker id="arrGrey" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 z" fill="#94A3B8"/></marker>
+    <style>
+      text { font-family: -apple-system, "Helvetica Neue", Arial, sans-serif; }
+      .mono { font-family: Menlo, "SF Mono", Consolas, monospace; white-space: pre; }
+      .muted { fill: #475569; }
+    </style>
+  </defs>
+  <rect width="1600" height="1040" fill="#F8FAFC"/>
+
+  <text x="800" y="60" text-anchor="middle" font-size="34" font-weight="700">What broke, and what fixed it</text>
+  <text x="800" y="97" text-anchor="middle" font-size="19" class="muted">The "Call completed" webhook: Dograh posts the results, n8n writes them into the Feedback sheet.</text>
+
+  <!-- BEFORE lane -->
+  <rect x="30" y="130" width="1540" height="400" rx="18" fill="#FEF2F2" stroke="#FCA5A5" stroke-width="2"/>
+  <text x="60" y="172" font-size="23" font-weight="700" fill="#B91C1C">BEFORE: every call this morning (06:31 &#8594; 08:28 UTC) got 403 Forbidden</text>
+
+  <rect x="60" y="205" width="230" height="170" rx="14" fill="#F5F3FF" stroke="#7C3AED" stroke-width="2"/>
+  <text x="175" y="245" text-anchor="middle" font-size="20" font-weight="700" fill="#6D28D9">Dograh</text>
+  <text x="175" y="275" text-anchor="middle" font-size="16">"Call completed"</text>
+  <text x="175" y="298" text-anchor="middle" font-size="16">webhook node</text>
+  <text x="175" y="335" text-anchor="middle" font-size="14" fill="#B91C1C">credential: none</text>
+
+  <line x1="295" y1="290" x2="335" y2="290" stroke="#DC2626" stroke-width="4" marker-end="url(#arrRed)"/>
+
+  <rect x="345" y="205" width="370" height="170" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2"/>
+  <text x="365" y="235" font-size="14" font-weight="700" class="muted">THE REQUEST (headers)</text>
+  <text x="365" y="265" font-size="14" class="mono">POST /webhook/dograh-call-completed</text>
+  <text x="365" y="290" font-size="14" class="mono">Content-Type: application/json</text>
+  <text x="365" y="315" font-size="14" class="mono">X-Dograh-Workflow-Run-Id: 7341&#8230;</text>
+  <text x="365" y="350" font-size="15" class="mono" font-weight="700" fill="#DC2626">&#10007; no Authorization header</text>
+
+  <line x1="720" y1="290" x2="760" y2="290" stroke="#DC2626" stroke-width="4" marker-end="url(#arrRed)"/>
+
+  <rect x="770" y="205" width="390" height="170" rx="14" fill="#FFF1F4" stroke="#EA4B71" stroke-width="2"/>
+  <text x="790" y="237" font-size="18" font-weight="700" fill="#BE123C">n8n "Call Completed" webhook</text>
+  <text x="790" y="268" font-size="15">Lock used: "Header Auth account"</text>
+  <text x="790" y="293" font-size="14" class="mono">expects X-API-Key = dgr_xxxx</text>
+  <text x="790" y="318" font-size="14" class="muted">(that is the Dograh API key!)</text>
+  <text x="790" y="352" font-size="15" font-weight="700" fill="#DC2626">got: nothing &#8594; 403 Forbidden</text>
+
+  <line x1="1165" y1="290" x2="1205" y2="290" stroke="#94A3B8" stroke-width="4" stroke-dasharray="8 6" marker-end="url(#arrGrey)"/>
+
+  <rect x="1215" y="205" width="325" height="170" rx="14" fill="#F1F5F9" stroke="#CBD5E1" stroke-width="2" stroke-dasharray="8 6"/>
+  <text x="1377" y="250" text-anchor="middle" font-size="20" font-weight="700" fill="#94A3B8">Google Sheets</text>
+  <text x="1377" y="280" text-anchor="middle" font-size="16" fill="#94A3B8">Feedback tab</text>
+  <text x="1377" y="325" text-anchor="middle" font-size="16" font-weight="700" fill="#DC2626">no row written</text>
+  <text x="1377" y="350" text-anchor="middle" font-size="14" fill="#94A3B8">workflow never started</text>
+
+  <text x="60" y="420" font-size="17" font-weight="700" fill="#B91C1C">Two mismatches at once:</text>
+  <text x="60" y="450" font-size="17">1. The n8n lock was set to the WRONG credential: the Dograh API key, which is meant only for n8n &#8594; Dograh calls.</text>
+  <text x="60" y="478" font-size="17">2. The Dograh sender carried NO key at all. n8n rejects before running anything, so no execution appeared in n8n.</text>
+  <text x="60" y="506" font-size="15" class="muted">Evidence: Caddy access log showed status 403 and the header list from Dograh had no Authorization / X-API-Key.</text>
+
+  <!-- AFTER lane -->
+  <rect x="30" y="560" width="1540" height="400" rx="18" fill="#ECFDF5" stroke="#6EE7B7" stroke-width="2"/>
+  <text x="60" y="602" font-size="23" font-weight="700" fill="#047857">AFTER: 09:00 UTC test call got 200 OK and the row was written</text>
+
+  <rect x="60" y="635" width="230" height="170" rx="14" fill="#F5F3FF" stroke="#7C3AED" stroke-width="2"/>
+  <text x="175" y="675" text-anchor="middle" font-size="20" font-weight="700" fill="#6D28D9">Dograh</text>
+  <text x="175" y="705" text-anchor="middle" font-size="16">"Call completed"</text>
+  <text x="175" y="728" text-anchor="middle" font-size="16">webhook node</text>
+  <text x="175" y="760" text-anchor="middle" font-size="13" fill="#047857">credential: n8n feedback</text>
+  <text x="175" y="780" text-anchor="middle" font-size="13" fill="#047857">receiver (bearer_token)</text>
+
+  <line x1="295" y1="720" x2="335" y2="720" stroke="#059669" stroke-width="4" marker-end="url(#arrGreen)"/>
+
+  <rect x="345" y="635" width="370" height="170" rx="14" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2"/>
+  <text x="365" y="665" font-size="14" font-weight="700" class="muted">THE REQUEST (headers)</text>
+  <text x="365" y="695" font-size="14" class="mono">POST /webhook/dograh-call-completed</text>
+  <text x="365" y="720" font-size="14" class="mono">Content-Type: application/json</text>
+  <text x="365" y="745" font-size="14" class="mono">X-Dograh-Workflow-Run-Id: 7341&#8230;</text>
+  <text x="365" y="780" font-size="14" class="mono" font-weight="700" fill="#047857">&#10003; Authorization: Bearer 9f3c&#8230;</text>
+
+  <line x1="720" y1="720" x2="760" y2="720" stroke="#059669" stroke-width="4" marker-end="url(#arrGreen)"/>
+
+  <rect x="770" y="635" width="390" height="170" rx="14" fill="#FFF1F4" stroke="#EA4B71" stroke-width="2"/>
+  <text x="790" y="667" font-size="18" font-weight="700" fill="#BE123C">n8n "Call Completed" webhook</text>
+  <text x="790" y="698" font-size="15">Lock used: "Dograh webhook secret"</text>
+  <text x="790" y="723" font-size="14" class="mono">expects Authorization =</text>
+  <text x="790" y="746" font-size="14" class="mono">        Bearer 9f3c&#8230;e71a</text>
+  <text x="790" y="782" font-size="15" font-weight="700" fill="#047857">got: exact match &#8594; 200 OK</text>
+
+  <line x1="1165" y1="720" x2="1205" y2="720" stroke="#059669" stroke-width="4" marker-end="url(#arrGreen)"/>
+
+  <rect x="1215" y="635" width="325" height="170" rx="14" fill="#FFFFFF" stroke="#16A34A" stroke-width="2"/>
+  <text x="1377" y="680" text-anchor="middle" font-size="20" font-weight="700" fill="#15803D">Google Sheets</text>
+  <text x="1377" y="710" text-anchor="middle" font-size="16">Feedback tab</text>
+  <text x="1377" y="755" text-anchor="middle" font-size="16" font-weight="700" fill="#047857">row appended &#10003;</text>
+  <text x="1377" y="780" text-anchor="middle" font-size="14" class="muted">nps &#183; quote &#183; summary &#183; follow-up</text>
+
+  <text x="60" y="850" font-size="17" font-weight="700" fill="#047857">The fix:</text>
+  <text x="60" y="880" font-size="17">1. Generated ONE new random secret and stored it in BOTH tools (Dograh "n8n feedback receiver", n8n "Dograh webhook secret").</text>
+  <text x="60" y="908" font-size="17">2. Dograh's webhook now SENDS it; n8n's webhook now CHECKS it. The Dograh API key went back to its only job (HTTP Request node).</text>
+  <text x="60" y="936" font-size="17">3. Published the Dograh agent: edits in a Draft version are not used by live calls.</text>
+
+  <text x="800" y="1005" text-anchor="middle" font-size="17" class="muted">Lesson: when you add auth to a receiver, change the sender in the same sitting, publish both sides, and run a test immediately.</text>
+</svg>

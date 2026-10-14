@@ -1,0 +1,28 @@
+{
+  "name": "aurelia-explainer-video",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Premium motion explainer with replacement real-call audio",
+  "scripts": {
+    "studio": "remotion studio",
+    "still": "remotion still Explainer out/still.png",
+    "render": "bash ./scripts/render.sh",
+    "draft": "bash ./scripts/render.sh aurelia-preview \"\" 0.5",
+    "typecheck": "tsc --noEmit",
+    "render:4k": "bash ./scripts/render.sh aurelia-free-demo-3d \"\" 2",
+    "music": "python3 scripts/build_music.py"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.534",
+    "@remotion/google-fonts": "4.0.534",
+    "@remotion/media-utils": "4.0.534",
+    "qrcode.react": "^4.2.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "remotion": "4.0.534"
+  },
+  "devDependencies": {
+    "@types/react": "18.3.12",
+    "typescript": "5.6.3"
+  }
+}

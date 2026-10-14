@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="#1F2937" width="1500" height="2000" viewBox="0 0 1500 2000">
+  <defs>
+    <filter id="rough" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="21" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <pattern id="ruled" width="1500" height="44" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="43" x2="1500" y2="43" stroke="#D6E6F5" stroke-width="2"/>
+    </pattern>
+    <style>
+      text { font-family: "Noteworthy", "Chalkboard SE", "Comic Sans MS", cursive; }
+      .h { font-family: "Marker Felt", "Chalkboard SE", cursive; }
+      .code { font-family: Menlo, monospace; white-space: pre; }
+      .say { font-style: italic; }
+    </style>
+  </defs>
+
+  <rect width="1500" height="2000" fill="#FFFDF4"/>
+  <rect y="150" width="1500" height="1850" fill="url(#ruled)"/>
+  <line x1="115" y1="0" x2="115" y2="2000" stroke="#F4A3A3" stroke-width="3"/>
+
+  <text x="150" y="92" class="h" font-size="58" fill="#1E3A8A">Step 5: The demo, scene by scene</text>
+  <text x="150" y="138" font-size="26" fill="#64748B">about 6 minutes   |   SHOW = what is on screen   |   SAY = your words   |   page 1 of 2</text>
+
+  <line x1="200" y1="215" x2="200" y2="1830" stroke="#94A3B8" stroke-width="4" stroke-dasharray="10 8"/>
+  <g filter="url(#rough)" stroke-width="3">
+    <circle cx="200" cy="225" r="30" fill="#F1F5F9" stroke="#64748B"/>
+    <circle cx="200" cy="445" r="30" fill="#DBEAFE" stroke="#2563EB"/>
+    <circle cx="200" cy="665" r="30" fill="#E0E7FF" stroke="#4F46E5"/>
+    <circle cx="200" cy="905" r="30" fill="#FEF3C7" stroke="#D97706"/>
+    <circle cx="200" cy="1105" r="30" fill="#FEE2E2" stroke="#DC2626"/>
+    <circle cx="200" cy="1405" r="30" fill="#DCFCE7" stroke="#16A34A"/>
+    <circle cx="200" cy="1645" r="30" fill="#F5F3FF" stroke="#7C3AED"/>
+  </g>
+  <g class="h" font-size="30" text-anchor="middle">
+    <text x="200" y="236">1</text><text x="200" y="456">2</text><text x="200" y="676">3</text><text x="200" y="916">4</text>
+    <text x="200" y="1116">5</text><text x="200" y="1416">6</text><text x="200" y="1656">7</text>
+  </g>
+  <g font-size="18" fill="#64748B" text-anchor="middle">
+    <text x="200" y="280">0:00</text><text x="200" y="500">0:30</text><text x="200" y="720">1:15</text><text x="200" y="960">2:15</text>
+    <text x="200" y="1160">2:30</text><text x="200" y="1460">4:30</text><text x="200" y="1700">5:30</text>
+  </g>
+
+  <!-- 1 -->
+  <text x="260" y="235" class="h" font-size="32">The problem <tspan font-size="22" fill="#64748B">(30 s)</tspan></text>
+  <text x="260" y="278" font-size="22"><tspan font-weight="bold">SHOW:</tspan> nothing yet, just talk</text>
+  <text x="260" y="316" font-size="22" class="say" fill="#6D28D9"><tspan font-weight="bold" font-style="normal">SAY:</tspan> "After delivery, a brand has no idea if the customer is happy. Calling every</text>
+  <text x="260" y="350" font-size="22" class="say" fill="#6D28D9">customer by hand is slow and expensive. This system does it for you."</text>
+
+  <!-- 2 -->
+  <text x="260" y="455" class="h" font-size="32">The customer list <tspan font-size="22" fill="#64748B">(45 s)</tspan></text>
+  <text x="260" y="498" font-size="22"><tspan font-weight="bold">SHOW:</tspan> Google Sheet, tab Outreach_Queue</text>
+  <text x="260" y="536" font-size="22" class="say" fill="#6D28D9"><tspan font-weight="bold" font-style="normal">SAY:</tspan> "Every delivered order lands here. Only people who agreed to a call get one.</text>
+  <text x="260" y="570" font-size="22" class="say" fill="#6D28D9">Neha is marked Pending but said No to calls, so she is never called."</text>
+
+  <!-- 3 -->
+  <text x="260" y="675" class="h" font-size="32">The brain: n8n <tspan font-size="22" fill="#64748B">(60 s)</tspan></text>
+  <text x="260" y="718" font-size="22"><tspan font-weight="bold">SHOW:</tspan> n8n, workflow Voice-Agent (point at the sticky notes)</text>
+  <text x="260" y="756" font-size="22" class="say" fill="#6D28D9"><tspan font-weight="bold" font-style="normal">SAY:</tspan> "Top row: every minute it reads the list, claims one customer, and asks the</text>
+  <text x="260" y="790" font-size="22" class="say" fill="#6D28D9">AI voice agent to call. Bottom row: when the call ends, the answers come back</text>
+  <text x="260" y="824" font-size="22" class="say" fill="#6D28D9">here and are saved. Nobody has to press anything."</text>
+
+  <!-- 4 -->
+  <text x="260" y="915" class="h" font-size="32">Go live <tspan font-size="22" fill="#64748B">(15 s)</tspan></text>
+  <text x="260" y="958" font-size="22"><tspan font-weight="bold">DO:</tspan> in the Sheet, DEMO-1002 (Priya Sharma): queue_status Hold &#8594; <tspan font-weight="bold">Pending</tspan>. Phone on speaker.</text>
+  <text x="260" y="996" font-size="22" class="say" fill="#6D28D9"><tspan font-weight="bold" font-style="normal">SAY:</tspan> "Let's call Priya. All I do is mark her Pending. Watch the status column."</text>
+
+  <!-- 5 -->
+  <text x="260" y="1115" class="h" font-size="32">The call <tspan font-size="22" fill="#64748B">(about 2 min)</tspan></text>
+  <text x="260" y="1158" font-size="22"><tspan font-weight="bold">SHOW:</tspan> status goes Dialing &#8594; Initiated, phone rings within a minute</text>
+  <text x="260" y="1196" font-size="22">You play Priya. Short, clear answers work best on a phone line:</text>
+  <rect x="260" y="1215" width="1180" height="125" rx="10" fill="#FEF2F2" stroke="#DC2626" stroke-width="2"/>
+  <text x="285" y="1252" font-size="21">"Yes, speaking."  &#183;  "Yes, now is fine."  &#183;  "It's lovely, I really like it."  &#183;  "About six hours."</text>
+  <text x="285" y="1288" font-size="21">"Yes, people notice it."  &#183;  "I like the rose note, nothing I dislike."  &#183;  "Yes, I'd buy it again."</text>
+  <text x="285" y="1324" font-size="21">"Eight."   (a plain number for the rating)</text>
+
+  <!-- 6 -->
+  <text x="260" y="1415" class="h" font-size="32">The results <tspan font-size="22" fill="#64748B">(60 s)</tspan></text>
+  <text x="260" y="1458" font-size="22"><tspan font-weight="bold">SHOW:</tspan> tab Feedback (row appears ~10 s after hang-up), Call_Attempts, queue = Completed</text>
+  <text x="260" y="1496" font-size="22" class="say" fill="#6D28D9"><tspan font-weight="bold" font-style="normal">SAY:</tspan> "The score, the customer's own words and a summary are already in the sheet,</text>
+  <text x="260" y="1530" font-size="22" class="say" fill="#6D28D9">with how long the call took. Nobody typed anything."</text>
+
+  <!-- 7 -->
+  <text x="260" y="1655" class="h" font-size="32">Why you can rely on it + close <tspan font-size="22" fill="#64748B">(60 s)</tspan></text>
+  <text x="260" y="1698" font-size="22"><tspan font-weight="bold">SHOW:</tspan> n8n Executions list (all green), Errors tab</text>
+  <text x="260" y="1736" font-size="22" class="say" fill="#6D28D9"><tspan font-weight="bold" font-style="normal">SAY:</tspan> "Every run is logged, failures are written to Errors, it runs on its own server</text>
+  <text x="260" y="1770" font-size="22" class="say" fill="#6D28D9">with nightly backups. For you we plug in your customer list, your brand's voice</text>
+  <text x="260" y="1804" font-size="22" class="say" fill="#6D28D9">and script, and your phone number."</text>
+
+  <text x="1440" y="1940" text-anchor="end" class="h" font-size="32" fill="#1E3A8A">next page: before, after, plan B  &#8594;</text>
+</svg>

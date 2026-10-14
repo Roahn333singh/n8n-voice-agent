@@ -1,0 +1,1593 @@
+[
+  {
+    "id": "TXLzcvYVqXg831DW",
+    "name": "Voice-Agent",
+    "nodes": [
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "minutes",
+                "minutesInterval": 1
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.4,
+        "position": [
+          -2656,
+          -1280
+        ],
+        "id": "bd2dc102-6978-4660-93f0-fc3357b0cb1a",
+        "name": "Schedule Trigger"
+      },
+      {
+        "parameters": {
+          "documentId": {
+            "__rl": true,
+            "value": "YOUR_GOOGLE_SHEET_ID",
+            "mode": "list",
+            "cachedResultName": "Aurelia Voice Agent - DEMO"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Outreach_Queue"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.7,
+        "position": [
+          -2432,
+          -1280
+        ],
+        "id": "a62e374b-a1dd-4fb0-bb24-61fee48b4547",
+        "name": "Read Outreach Queue",
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "name": "Google Sheets account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "fb0adef6-23fc-4858-982c-945c3dc74631",
+                "leftValue": "={{ $json.permission_to_call }}",
+                "rightValue": "=Yes",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals"
+                }
+              },
+              {
+                "id": "400b4423-7f44-466c-aa63-3ec497710d2c",
+                "leftValue": "={{ $json.queue_status }}",
+                "rightValue": "Pending",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals",
+                  "name": "filter.operator.equals"
+                }
+              },
+              {
+                "id": "2eb25c91-58cc-439b-bc8b-0c464319bd59",
+                "leftValue": "={{ $json.scheduled_call_at <= $now.setZone('Asia/Kolkata').toFormat('yyyy-MM-dd HH:mm:ss') }}",
+                "rightValue": "true",
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          -2208,
+          -1280
+        ],
+        "id": "5452db69-919b-4b3a-a74b-b267d2c8d8be",
+        "name": "Ready to Call?"
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "n8n-nodes-base.splitInBatches",
+        "typeVersion": 3,
+        "position": [
+          -1904,
+          -1280
+        ],
+        "id": "8b232073-b8dc-414a-95cd-2aad8d1ea328",
+        "name": "Loop Over Items"
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "documentId": {
+            "__rl": true,
+            "value": "YOUR_GOOGLE_SHEET_ID",
+            "mode": "list",
+            "cachedResultName": "Aurelia Voice Agent - DEMO"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Outreach_Queue"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "order_id": "={{ $('Loop Over Items').item.json.order_id }}",
+              "queue_status": "Dialing",
+              "attempt_count": "={{ Number($('Loop Over Items').item.json.attempt_count || 0) + 1 }}"
+            },
+            "matchingColumns": [
+              "order_id"
+            ],
+            "schema": [
+              {
+                "id": "order_id",
+                "displayName": "order_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "customer_id",
+                "displayName": "customer_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "customer_name",
+                "displayName": "customer_name",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "phone_e164",
+                "displayName": "phone_e164",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "product_name",
+                "displayName": "product_name",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "purchase_date",
+                "displayName": "purchase_date",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "delivery_date",
+                "displayName": "delivery_date",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "permission_to_call",
+                "displayName": "permission_to_call",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "scheduled_call_at",
+                "displayName": "scheduled_call_at",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "queue_status",
+                "displayName": "queue_status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "attempt_count",
+                "displayName": "attempt_count",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "next_attempt_at",
+                "displayName": "next_attempt_at",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.7,
+        "position": [
+          -1680,
+          -1152
+        ],
+        "id": "33adfd8a-dab0-4986-8683-407cd3e76872",
+        "name": "Mark Dialing",
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "name": "Google Sheets account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.dograh.com/api/v1/public/agent/YOUR_DOGRAH_TRIGGER_UUID",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpHeaderAuth",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": []
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"phone_number\": \"{{ $('Loop Over Items').item.json.phone_e164 }}\",\n  \"initial_context\": {\n    \"customer_id\": \"{{ $('Loop Over Items').item.json.customer_id }}\",\n    \"customer_name\": \"{{ $('Loop Over Items').item.json.customer_name }}\",\n    \"phone_number\": \"{{ $('Loop Over Items').item.json.phone_e164 }}\",\n    \"product_name\": \"{{ $('Loop Over Items').item.json.product_name }}\",\n    \"purchase_date\": \"{{ $('Loop Over Items').item.json.purchase_date }}\",\n    \"order_id\": \"{{ $('Loop Over Items').item.json.order_id }}\"\n  }\n}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.5,
+        "position": [
+          -1456,
+          -1152
+        ],
+        "id": "23d621b3-5117-41a2-bf60-ac01b3bc1543",
+        "name": "Start Dograh Call",
+        "credentials": {
+          "httpHeaderAuth": {
+            "name": "Header Auth account"
+          }
+        },
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "operation": "append",
+          "documentId": {
+            "__rl": true,
+            "value": "YOUR_GOOGLE_SHEET_ID",
+            "mode": "list",
+            "cachedResultName": "Aurelia Voice Agent - DEMO"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": 1500231701,
+            "mode": "list",
+            "cachedResultName": "Call_Attempts"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "attempt_id": "={{ $json.workflow_run_id }}",
+              "dograh_run_id": "={{ $json.workflow_run_id }}",
+              "order_id": "={{ $('Loop Over Items').item.json.order_id }}",
+              "customer_id": "={{ $('Loop Over Items').item.json.customer_id }}",
+              "started_at": "={{ $now.setZone('Asia/Kolkata').toFormat('yyyy-MM-dd HH:mm:ss') }}",
+              "call_outcome": "Initiated"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "attempt_id",
+                "displayName": "attempt_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "order_id",
+                "displayName": "order_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "customer_id",
+                "displayName": "customer_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "dograh_run_id",
+                "displayName": "dograh_run_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "started_at",
+                "displayName": "started_at",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "ended_at",
+                "displayName": "ended_at",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "duration_seconds",
+                "displayName": "duration_seconds",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "call_outcome",
+                "displayName": "call_outcome",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "failure_reason",
+                "displayName": "failure_reason",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.7,
+        "position": [
+          -1232,
+          -1232
+        ],
+        "id": "e6be29a9-19b2-4ee4-a5f0-17550006bb47",
+        "name": "Log Call Attempt",
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "name": "Google Sheets account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "documentId": {
+            "__rl": true,
+            "value": "YOUR_GOOGLE_SHEET_ID",
+            "mode": "list",
+            "cachedResultName": "Aurelia Voice Agent - DEMO"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Outreach_Queue"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "order_id": "={{ $('Loop Over Items').item.json.order_id }}",
+              "queue_status": "Initiated"
+            },
+            "matchingColumns": [
+              "order_id"
+            ],
+            "schema": [
+              {
+                "id": "order_id",
+                "displayName": "order_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "customer_id",
+                "displayName": "customer_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "customer_name",
+                "displayName": "customer_name",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "phone_e164",
+                "displayName": "phone_e164",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "product_name",
+                "displayName": "product_name",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "purchase_date",
+                "displayName": "purchase_date",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "delivery_date",
+                "displayName": "delivery_date",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "permission_to_call",
+                "displayName": "permission_to_call",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "scheduled_call_at",
+                "displayName": "scheduled_call_at",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "queue_status",
+                "displayName": "queue_status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "attempt_count",
+                "displayName": "attempt_count",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "next_attempt_at",
+                "displayName": "next_attempt_at",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.7,
+        "position": [
+          -1008,
+          -1232
+        ],
+        "id": "930f8767-dd72-4e30-bd77-a11601edb367",
+        "name": "Mark Initiated",
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "name": "Google Sheets account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "documentId": {
+            "__rl": true,
+            "value": "YOUR_GOOGLE_SHEET_ID",
+            "mode": "list",
+            "cachedResultName": "Aurelia Voice Agent - DEMO"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Outreach_Queue"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "order_id": "={{ $('Loop Over Items').item.json.order_id }}",
+              "queue_status": "Failed"
+            },
+            "matchingColumns": [
+              "order_id"
+            ],
+            "schema": [
+              {
+                "id": "order_id",
+                "displayName": "order_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "customer_id",
+                "displayName": "customer_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "customer_name",
+                "displayName": "customer_name",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "phone_e164",
+                "displayName": "phone_e164",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "product_name",
+                "displayName": "product_name",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "purchase_date",
+                "displayName": "purchase_date",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "delivery_date",
+                "displayName": "delivery_date",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "permission_to_call",
+                "displayName": "permission_to_call",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "scheduled_call_at",
+                "displayName": "scheduled_call_at",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "queue_status",
+                "displayName": "queue_status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "attempt_count",
+                "displayName": "attempt_count",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "next_attempt_at",
+                "displayName": "next_attempt_at",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.7,
+        "position": [
+          -1232,
+          -976
+        ],
+        "id": "d2edc81a-ebdc-4ba0-b503-785085a94721",
+        "name": "Mark Failed",
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "name": "Google Sheets account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "dograh-call-completed",
+          "authentication": "headerAuth",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          -2128,
+          -672
+        ],
+        "id": "a256ac00-f620-4a98-a414-0e26d7832ca3",
+        "name": "Call Completed",
+        "webhookId": "00000000-0000-0000-0000-000000000000",
+        "credentials": {
+          "httpHeaderAuth": {
+            "name": "Dograh webhook secret"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "appendOrUpdate",
+          "documentId": {
+            "__rl": true,
+            "value": "YOUR_GOOGLE_SHEET_ID",
+            "mode": "list",
+            "cachedResultName": "Aurelia Voice Agent - DEMO"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": 684645729,
+            "mode": "list",
+            "cachedResultName": "Feedback"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "feedback_id": "={{ $json.body.attempt_id }}",
+              "attempt_id": "={{ $json.body.attempt_id }}",
+              "order_id": "={{ $json.body.order_id }}",
+              "customer_id": "={{ $json.body.customer_id }}",
+              "follow_up_requested": "={{ String($json.body.follow_up_requested).toLowerCase() === 'true' }}",
+              "exact_quote": "={{ $json.body.exact_quote }}",
+              "summary": "={{ $json.body.summary }}",
+              "captured_at": "={{ $now.setZone('Asia/Kolkata').toFormat('yyyy-MM-dd HH:mm:ss') }}",
+              "nps": "={{ Number($json.body.nps) }}"
+            },
+            "matchingColumns": [
+              "feedback_id"
+            ],
+            "schema": [
+              {
+                "id": "feedback_id",
+                "displayName": "feedback_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "attempt_id",
+                "displayName": "attempt_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "order_id",
+                "displayName": "order_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "customer_id",
+                "displayName": "customer_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "nps",
+                "displayName": "nps",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "liked",
+                "displayName": "liked",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "disliked",
+                "displayName": "disliked",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "repurchase_intent",
+                "displayName": "repurchase_intent",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "follow_up_requested",
+                "displayName": "follow_up_requested",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "exact_quote",
+                "displayName": "exact_quote",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "summary",
+                "displayName": "summary",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "captured_at",
+                "displayName": "captured_at",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.7,
+        "position": [
+          -1904,
+          -672
+        ],
+        "id": "d7353508-14bc-431d-be94-9899cb8a751b",
+        "name": "Save Feedback",
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "name": "Google Sheets account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "documentId": {
+            "__rl": true,
+            "value": "YOUR_GOOGLE_SHEET_ID",
+            "mode": "list",
+            "cachedResultName": "Aurelia Voice Agent - DEMO"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Outreach_Queue"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "order_id": "={{ $('Call Completed').item.json.body.order_id }}",
+              "queue_status": "Completed"
+            },
+            "matchingColumns": [
+              "order_id"
+            ],
+            "schema": [
+              {
+                "id": "order_id",
+                "displayName": "order_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "customer_id",
+                "displayName": "customer_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "customer_name",
+                "displayName": "customer_name",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "phone_e164",
+                "displayName": "phone_e164",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "product_name",
+                "displayName": "product_name",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "purchase_date",
+                "displayName": "purchase_date",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "delivery_date",
+                "displayName": "delivery_date",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "permission_to_call",
+                "displayName": "permission_to_call",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "scheduled_call_at",
+                "displayName": "scheduled_call_at",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "queue_status",
+                "displayName": "queue_status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "attempt_count",
+                "displayName": "attempt_count",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "next_attempt_at",
+                "displayName": "next_attempt_at",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.7,
+        "position": [
+          -1680,
+          -672
+        ],
+        "id": "0ce1cf11-7928-45e0-a10d-d342274421cd",
+        "name": "Mark Completed",
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "name": "Google Sheets account"
+          }
+        },
+        "alwaysOutputData": true
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "documentId": {
+            "__rl": true,
+            "value": "YOUR_GOOGLE_SHEET_ID",
+            "mode": "list",
+            "cachedResultName": "Aurelia Voice Agent - DEMO"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": 1500231701,
+            "mode": "list",
+            "cachedResultName": "Call_Attempts"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "attempt_id": "={{ $('Call Completed').item.json.body.attempt_id }}",
+              "ended_at": "={{ $now.setZone('Asia/Kolkata').toFormat('yyyy-MM-dd HH:mm:ss') }}",
+              "duration_seconds": "={{ $('Call Completed').item.json.body.duration_seconds }}",
+              "call_outcome": "={{ $('Call Completed').item.json.body.call_outcome || $('Call Completed').item.json.body.call_status || 'completed' }}"
+            },
+            "matchingColumns": [
+              "attempt_id"
+            ],
+            "schema": [
+              {
+                "id": "attempt_id",
+                "displayName": "attempt_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "order_id",
+                "displayName": "order_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "customer_id",
+                "displayName": "customer_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "dograh_run_id",
+                "displayName": "dograh_run_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "started_at",
+                "displayName": "started_at",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "ended_at",
+                "displayName": "ended_at",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "duration_seconds",
+                "displayName": "duration_seconds",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "call_outcome",
+                "displayName": "call_outcome",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "failure_reason",
+                "displayName": "failure_reason",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.7,
+        "position": [
+          -1456,
+          -672
+        ],
+        "id": "0259f5e6-0e87-4992-bee6-1e642069f35f",
+        "name": "Log Call Result",
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "name": "Google Sheets account"
+          }
+        },
+        "alwaysOutputData": true
+      },
+      {
+        "parameters": {
+          "content": "## Outbound: dial customers\nEvery minute: read the queue, keep rows with permission = Yes, status = Pending and a due time.\nEach row: **Dialing** (so it is never dialed twice) -> start the Dograh call -> log the attempt -> **Initiated**.\nIf Dograh refuses the call: **Failed**.",
+          "height": 260,
+          "width": 1900,
+          "color": 5
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          -2720,
+          -1520
+        ],
+        "id": "8d317ddb-6318-42b4-834f-9ae4ef25a53f",
+        "name": "Note: outbound"
+      },
+      {
+        "parameters": {
+          "content": "## Inbound: call results from Dograh\nDograh POSTs here when the call ends (Authorization: Bearer secret).\nSave the feedback -> queue row **Completed** -> fill ended_at / duration / outcome in Call_Attempts.",
+          "height": 220,
+          "width": 1000,
+          "color": 4
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          -2200,
+          -880
+        ],
+        "id": "4e00a7d0-705a-4d66-8645-ddf2ffab9ee0",
+        "name": "Note: inbound"
+      }
+    ],
+    "connections": {
+      "Schedule Trigger": {
+        "main": [
+          [
+            {
+              "node": "Read Outreach Queue",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Read Outreach Queue": {
+        "main": [
+          [
+            {
+              "node": "Ready to Call?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ready to Call?": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Loop Over Items": {
+        "main": [
+          [],
+          [
+            {
+              "node": "Mark Dialing",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Mark Dialing": {
+        "main": [
+          [
+            {
+              "node": "Start Dograh Call",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Start Dograh Call": {
+        "main": [
+          [
+            {
+              "node": "Log Call Attempt",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Mark Failed",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Log Call Attempt": {
+        "main": [
+          [
+            {
+              "node": "Mark Initiated",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Mark Initiated": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Mark Failed": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Call Completed": {
+        "main": [
+          [
+            {
+              "node": "Save Feedback",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Save Feedback": {
+        "main": [
+          [
+            {
+              "node": "Mark Completed",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Mark Completed": {
+        "main": [
+          [
+            {
+              "node": "Log Call Result",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1",
+      "binaryMode": "separate",
+      "errorWorkflow": "vaErrorAlerts001"
+    },
+    "active": false
+  },
+  {
+    "id": "vaErrorAlerts001",
+    "name": "Voice-Agent Error Alerts",
+    "nodes": [
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.errorTrigger",
+        "typeVersion": 1,
+        "position": [
+          0,
+          0
+        ],
+        "id": "318fa691-da0f-45f8-9154-327c3c46aa72",
+        "name": "Error Trigger"
+      },
+      {
+        "parameters": {
+          "operation": "append",
+          "documentId": {
+            "__rl": true,
+            "value": "YOUR_GOOGLE_SHEET_ID",
+            "mode": "list",
+            "cachedResultName": "Aurelia Voice Agent - DEMO"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": 900000001,
+            "mode": "list",
+            "cachedResultName": "Errors"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "time": "={{ $now.setZone('Asia/Kolkata').toFormat('yyyy-MM-dd HH:mm:ss') }}",
+              "workflow": "={{ $json.workflow.name }}",
+              "failed_node": "={{ $json.execution.lastNodeExecuted }}",
+              "error_message": "={{ $json.execution.error.message }}",
+              "execution_id": "={{ $json.execution.id }}",
+              "execution_url": "={{ $json.execution.url }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "time",
+                "displayName": "time",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "workflow",
+                "displayName": "workflow",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "failed_node",
+                "displayName": "failed_node",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "error_message",
+                "displayName": "error_message",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "execution_id",
+                "displayName": "execution_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "execution_url",
+                "displayName": "execution_url",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.7,
+        "position": [
+          224,
+          0
+        ],
+        "id": "ab25dd8a-581c-4863-b0f4-8e1c30241052",
+        "name": "Log Error",
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "name": "Google Sheets account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Error Trigger": {
+        "main": [
+          [
+            {
+              "node": "Log Error",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1"
+    },
+    "active": false
+  }
+]

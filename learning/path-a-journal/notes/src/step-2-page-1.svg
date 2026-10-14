@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="#1F2937" width="1500" height="2000" viewBox="0 0 1500 2000">
+  <defs>
+    <filter id="rough" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="5" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <pattern id="ruled" width="1500" height="44" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="43" x2="1500" y2="43" stroke="#D6E6F5" stroke-width="2"/>
+    </pattern>
+    <marker id="ar" markerWidth="16" markerHeight="16" refX="12" refY="8" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L14,8 L0,16" fill="none" stroke="#1F2937" stroke-width="3"/></marker>
+    <marker id="arR" markerWidth="16" markerHeight="16" refX="12" refY="8" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L14,8 L0,16" fill="none" stroke="#DC2626" stroke-width="3"/></marker>
+    <style>
+      text { font-family: "Noteworthy", "Chalkboard SE", "Comic Sans MS", cursive; }
+      .h { font-family: "Marker Felt", "Chalkboard SE", cursive; }
+      .code { font-family: Menlo, monospace; white-space: pre; }
+    </style>
+  </defs>
+
+  <rect width="1500" height="2000" fill="#FFFDF4"/>
+  <rect y="150" width="1500" height="1850" fill="url(#ruled)"/>
+  <line x1="115" y1="0" x2="115" y2="2000" stroke="#F4A3A3" stroke-width="3"/>
+
+  <text x="150" y="92" class="h" font-size="58" fill="#1E3A8A">Step 2: Make the workflow demo-proof</text>
+  <text x="150" y="138" font-size="26" fill="#64748B">10 Oct 2026   |   n8n restarted 3 times (~10 s each)   |   page 1 of 2</text>
+
+  <!-- status journey -->
+  <text x="150" y="215" class="h" font-size="38" fill="#7C3AED">The journey of one customer row (queue_status)</text>
+  <g filter="url(#rough)" stroke-width="3">
+    <rect x="150" y="250" width="200" height="80" rx="12" fill="#F1F5F9" stroke="#64748B"/>
+    <rect x="422" y="250" width="200" height="80" rx="12" fill="#FEF3C7" stroke="#D97706"/>
+    <rect x="694" y="250" width="200" height="80" rx="12" fill="#DBEAFE" stroke="#2563EB"/>
+    <rect x="966" y="250" width="200" height="80" rx="12" fill="#E0E7FF" stroke="#4F46E5"/>
+    <rect x="1238" y="250" width="200" height="80" rx="12" fill="#DCFCE7" stroke="#16A34A"/>
+    <rect x="694" y="440" width="200" height="80" rx="12" fill="#FEE2E2" stroke="#DC2626"/>
+  </g>
+  <text x="250" y="300" text-anchor="middle" class="h" font-size="28">Hold</text>
+  <text x="522" y="300" text-anchor="middle" class="h" font-size="28">Pending</text>
+  <text x="794" y="300" text-anchor="middle" class="h" font-size="28" fill="#1D4ED8">Dialing</text>
+  <text x="1066" y="300" text-anchor="middle" class="h" font-size="28">Initiated</text>
+  <text x="1338" y="300" text-anchor="middle" class="h" font-size="28" fill="#15803D">Completed</text>
+  <text x="794" y="490" text-anchor="middle" class="h" font-size="28" fill="#B91C1C">Failed</text>
+  <line x1="352" y1="290" x2="418" y2="290" stroke="#1F2937" stroke-width="3" marker-end="url(#ar)"/>
+  <line x1="624" y1="290" x2="690" y2="290" stroke="#1F2937" stroke-width="3" marker-end="url(#ar)"/>
+  <line x1="896" y1="290" x2="962" y2="290" stroke="#1F2937" stroke-width="3" marker-end="url(#ar)"/>
+  <line x1="1168" y1="290" x2="1234" y2="290" stroke="#1F2937" stroke-width="3" marker-end="url(#ar)"/>
+  <line x1="794" y1="334" x2="794" y2="434" stroke="#DC2626" stroke-width="3" marker-end="url(#arR)"/>
+  <text x="250" y="368" text-anchor="middle" font-size="20" fill="#64748B">you flip it</text>
+  <text x="522" y="368" text-anchor="middle" font-size="20" fill="#64748B">n8n picks it up</text>
+  <text x="1000" y="368" font-size="20" fill="#64748B">Dograh said OK</text>
+  <text x="1338" y="368" text-anchor="middle" font-size="20" fill="#64748B">call ended + feedback</text>
+  <text x="810" y="400" font-size="20" fill="#DC2626">Dograh refused</text>
+  <text x="922" y="470" font-size="22" fill="#1D4ED8">NEW: Dialing, Failed, Completed</text>
+  <text x="922" y="502" font-size="22" fill="#1D4ED8">(before: rows stopped at Initiated forever)</text>
+
+  <!-- fix 1 -->
+  <text x="150" y="600" class="h" font-size="40" fill="#B91C1C">Fix 1: no more double calls</text>
+  <rect x="150" y="625" width="620" height="230" rx="14" fill="#FEF2F2" stroke="#DC2626" stroke-width="3" filter="url(#rough)"/>
+  <text x="175" y="668" class="h" font-size="28" fill="#B91C1C">BEFORE</text>
+  <text x="175" y="710" font-size="24">12:00 run: row is Pending &#8594; calling...</text>
+  <text x="175" y="748" font-size="24">           (status changed only AFTER)</text>
+  <text x="175" y="786" font-size="24">12:01 run: still Pending &#8594; calls AGAIN!</text>
+  <text x="175" y="830" font-size="24" fill="#B91C1C">= customer gets 2 calls</text>
+
+  <rect x="820" y="625" width="620" height="230" rx="14" fill="#ECFDF5" stroke="#059669" stroke-width="3" filter="url(#rough)"/>
+  <text x="845" y="668" class="h" font-size="28" fill="#047857">AFTER</text>
+  <text x="845" y="710" font-size="24">12:00 run: FIRST set Dialing,</text>
+  <text x="845" y="748" font-size="24">           THEN call Dograh</text>
+  <text x="845" y="786" font-size="24">12:01 run: sees Dialing &#8594; skips it</text>
+  <text x="845" y="830" font-size="24" fill="#047857">= exactly 1 call. Claim it, then do it.</text>
+
+  <!-- fix 2 -->
+  <text x="150" y="930" class="h" font-size="40" fill="#B91C1C">Fix 2: when Dograh says NO</text>
+  <text x="150" y="975" font-size="24">Before: one failed call crashed the whole run, the row stayed Pending and was</text>
+  <text x="150" y="1011" font-size="24">retried every minute (15 failed runs on 9 Oct). Now the HTTP node has 2 exits:</text>
+  <g filter="url(#rough)" stroke-width="3">
+    <rect x="150" y="1050" width="290" height="100" rx="14" fill="#FFFFFF" stroke="#1F2937"/>
+    <rect x="560" y="1035" width="260" height="70" rx="12" fill="#E0E7FF" stroke="#4F46E5"/>
+    <rect x="900" y="1035" width="250" height="70" rx="12" fill="#E0E7FF" stroke="#4F46E5"/>
+    <rect x="560" y="1125" width="260" height="70" rx="12" fill="#FEE2E2" stroke="#DC2626"/>
+  </g>
+  <text x="295" y="1092" text-anchor="middle" font-size="25" font-weight="bold">Start Dograh Call</text>
+  <text x="295" y="1126" text-anchor="middle" font-size="20" fill="#64748B">(HTTP Request)</text>
+  <text x="690" y="1078" text-anchor="middle" font-size="23">Log Call Attempt</text>
+  <text x="1025" y="1078" text-anchor="middle" font-size="23">Mark Initiated</text>
+  <text x="690" y="1168" text-anchor="middle" font-size="23" fill="#B91C1C">Mark Failed</text>
+  <path d="M442,1080 L554,1070" stroke="#1F2937" stroke-width="3" fill="none" marker-end="url(#ar)"/>
+  <path d="M442,1120 L554,1158" stroke="#DC2626" stroke-width="3" fill="none" marker-end="url(#arR)"/>
+  <line x1="822" y1="1070" x2="894" y2="1070" stroke="#1F2937" stroke-width="3" marker-end="url(#ar)"/>
+  <text x="470" y="1058" font-size="20">success</text>
+  <text x="470" y="1170" font-size="20" fill="#DC2626">error</text>
+  <rect x="1180" y="1035" width="260" height="160" rx="6" fill="#FEF3C7" stroke="#D97706" stroke-width="3" filter="url(#rough)"/>
+  <text x="1198" y="1070" font-size="20" font-weight="bold" fill="#92400E">Node Settings &gt;</text>
+  <text x="1198" y="1102" font-size="20" fill="#92400E">On Error &gt;</text>
+  <text x="1198" y="1134" font-size="20" fill="#92400E">"Continue (using</text>
+  <text x="1198" y="1166" font-size="20" fill="#92400E">error output)"</text>
+
+  <!-- fix 3 -->
+  <text x="150" y="1270" class="h" font-size="40" fill="#B91C1C">Fix 3: close the loop after the call</text>
+  <g filter="url(#rough)" stroke-width="3">
+    <rect x="150" y="1300" width="280" height="90" rx="12" fill="#ECFDF5" stroke="#059669"/>
+    <rect x="490" y="1300" width="280" height="90" rx="12" fill="#FFFFFF" stroke="#1F2937"/>
+    <rect x="830" y="1300" width="280" height="90" rx="12" fill="#DCFCE7" stroke="#16A34A"/>
+    <rect x="1170" y="1300" width="270" height="90" rx="12" fill="#FFFFFF" stroke="#1F2937"/>
+  </g>
+  <text x="290" y="1340" text-anchor="middle" font-size="24" font-weight="bold">Call Completed</text>
+  <text x="290" y="1372" text-anchor="middle" font-size="19" fill="#64748B">webhook from Dograh</text>
+  <text x="630" y="1340" text-anchor="middle" font-size="24">Save Feedback</text>
+  <text x="630" y="1372" text-anchor="middle" font-size="19" fill="#64748B">Feedback tab</text>
+  <text x="970" y="1340" text-anchor="middle" font-size="24" font-weight="bold" fill="#15803D">Mark Completed</text>
+  <text x="970" y="1372" text-anchor="middle" font-size="19" fill="#64748B">NEW &#183; queue row</text>
+  <text x="1305" y="1340" text-anchor="middle" font-size="24" font-weight="bold">Log Call Result</text>
+  <text x="1305" y="1372" text-anchor="middle" font-size="19" fill="#64748B">NEW &#183; Call_Attempts</text>
+  <line x1="432" y1="1345" x2="484" y2="1345" stroke="#1F2937" stroke-width="3" marker-end="url(#ar)"/>
+  <line x1="772" y1="1345" x2="824" y2="1345" stroke="#1F2937" stroke-width="3" marker-end="url(#ar)"/>
+  <line x1="1112" y1="1345" x2="1164" y2="1345" stroke="#1F2937" stroke-width="3" marker-end="url(#ar)"/>
+  <text x="150" y="1440" font-size="24">Call_Attempts now gets ended_at, duration_seconds and call_outcome too.</text>
+  <text x="150" y="1478" font-size="24"><tspan font-weight="bold" fill="#7C3AED">Tip:</tspan> "Always Output Data" = ON, so one row that is not found does not stop the chain.</text>
+
+  <!-- lesson -->
+  <rect x="150" y="1530" width="1290" height="330" rx="14" fill="#F5F3FF" stroke="#7C3AED" stroke-width="3" filter="url(#rough)"/>
+  <text x="180" y="1580" class="h" font-size="36" fill="#6D28D9">Big lesson: $json changes when you add a node!</text>
+  <text x="180" y="1626" font-size="25">$json = the output of the node RIGHT BEFORE this one.</text>
+  <text x="180" y="1664" font-size="25">I put "Mark Dialing" in front of the HTTP call, so $json became the Sheets</text>
+  <text x="180" y="1702" font-size="25">reply, not the customer row. Fix: ask a specific node by its NAME:</text>
+  <rect x="180" y="1725" width="1230" height="100" rx="6" fill="#FEF3C7" stroke="#D97706" stroke-width="2"/>
+  <text x="200" y="1765" class="code" font-size="22">before:  {{ $json.phone_e164 }}</text>
+  <text x="200" y="1805" class="code" font-size="22">after:   {{ $('Loop Over Items').item.json.phone_e164 }}</text>
+
+  <text x="1440" y="1940" text-anchor="end" class="h" font-size="32" fill="#1E3A8A">next page: alerts, demo sheet, deploying  &#8594;</text>
+</svg>

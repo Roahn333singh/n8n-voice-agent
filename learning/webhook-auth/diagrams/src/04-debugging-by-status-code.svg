@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="#0F172A" width="1600" height="1000" viewBox="0 0 1600 1000">
+  <defs>
+    <style>
+      text { font-family: -apple-system, "Helvetica Neue", Arial, sans-serif; }
+      .mono { font-family: Menlo, "SF Mono", Consolas, monospace; white-space: pre; }
+      .muted { fill: #475569; }
+    </style>
+  </defs>
+  <rect width="1600" height="1000" fill="#F8FAFC"/>
+
+  <text x="800" y="60" text-anchor="middle" font-size="34" font-weight="700">Webhook not working? Read the status code first</text>
+  <text x="800" y="97" text-anchor="middle" font-size="19" class="muted">The status code tells you which layer refused the request, so you know where to look.</text>
+
+  <!-- header row -->
+  <text x="60" y="150" font-size="16" font-weight="700" class="muted">CODE</text>
+  <text x="300" y="150" font-size="16" font-weight="700" class="muted">WHAT IT MEANS</text>
+  <text x="820" y="150" font-size="16" font-weight="700" class="muted">USUAL CAUSE IN n8n + DOGRAH</text>
+
+  <!-- 200 -->
+  <rect x="40" y="165" width="1520" height="125" rx="14" fill="#ECFDF5" stroke="#6EE7B7" stroke-width="2"/>
+  <text x="60" y="222" font-size="34" font-weight="800" fill="#047857">200</text>
+  <text x="60" y="255" font-size="16" fill="#047857">OK</text>
+  <text x="300" y="215" font-size="18" font-weight="600">Request accepted, workflow started.</text>
+  <text x="300" y="245" font-size="16" class="muted">If the sheet is still wrong, the problem is inside the workflow.</text>
+  <text x="820" y="215" font-size="16">Open n8n &#8594; Executions &#8594; click the run &#8594; find the red node.</text>
+  <text x="820" y="245" font-size="16">Check expressions like <tspan class="mono">$json.body.nps</tspan> match the real payload.</text>
+
+  <!-- 401/403 -->
+  <rect x="40" y="305" width="1520" height="150" rx="14" fill="#FEF2F2" stroke="#FCA5A5" stroke-width="2"/>
+  <text x="60" y="365" font-size="34" font-weight="800" fill="#B91C1C">401</text>
+  <text x="140" y="365" font-size="34" font-weight="800" fill="#B91C1C">403</text>
+  <text x="60" y="398" font-size="16" fill="#B91C1C">Unauthorized /</text>
+  <text x="60" y="420" font-size="16" fill="#B91C1C">Forbidden</text>
+  <text x="300" y="355" font-size="18" font-weight="600">The door exists, but the key is missing or wrong.</text>
+  <text x="300" y="385" font-size="16" class="muted">n8n refuses BEFORE running, so there is NO execution.</text>
+  <text x="300" y="410" font-size="16" class="muted">&#8592; today's bug</text>
+  <text x="820" y="355" font-size="16">&#8226; Sender has no credential attached (Dograh webhook: none).</text>
+  <text x="820" y="382" font-size="16">&#8226; Header NAME differs (X-API-Key vs Authorization).</text>
+  <text x="820" y="409" font-size="16">&#8226; VALUE differs: missing "Bearer ", extra space, old token.</text>
+  <text x="820" y="436" font-size="16">&#8226; Dograh change still in Draft, not Published.</text>
+
+  <!-- 404 -->
+  <rect x="40" y="470" width="1520" height="150" rx="14" fill="#FFFBEB" stroke="#FCD34D" stroke-width="2"/>
+  <text x="60" y="530" font-size="34" font-weight="800" fill="#B45309">404</text>
+  <text x="60" y="563" font-size="16" fill="#B45309">Not Found</text>
+  <text x="300" y="520" font-size="18" font-weight="600">No door at this address.</text>
+  <text x="300" y="550" font-size="16" class="muted">n8n has no active webhook registered on that path.</text>
+  <text x="820" y="520" font-size="16">&#8226; Workflow is not Active / Published.</text>
+  <text x="820" y="547" font-size="16">&#8226; Using <tspan class="mono">/webhook-test/&#8230;</tspan> (only works while "Listen" is on).</text>
+  <text x="820" y="574" font-size="16">&#8226; Path typo, or the webhook node was deleted or renamed.</text>
+  <text x="820" y="601" font-size="16">&#8226; Wrong HTTP method (node set to GET, sender uses POST).</text>
+
+  <!-- 5xx -->
+  <rect x="40" y="635" width="1520" height="125" rx="14" fill="#F1F5F9" stroke="#CBD5E1" stroke-width="2"/>
+  <text x="60" y="692" font-size="34" font-weight="800" fill="#334155">5xx</text>
+  <text x="60" y="725" font-size="16" fill="#334155">Server error</text>
+  <text x="300" y="685" font-size="18" font-weight="600">The server or workflow crashed.</text>
+  <text x="300" y="715" font-size="16" class="muted">502 = n8n container down behind Caddy. 500 = workflow error.</text>
+  <text x="820" y="685" font-size="16"><tspan class="mono">sudo docker ps</tspan> &#183; <tspan class="mono">sudo docker logs n8n --tail 100</tspan></text>
+  <text x="820" y="715" font-size="16">Then n8n &#8594; Executions for the failing node.</text>
+
+  <!-- Where to look -->
+  <rect x="40" y="785" width="1520" height="185" rx="14" fill="#0F172A"/>
+  <text x="70" y="825" font-size="20" font-weight="700" fill="#F8FAFC">Where to look, in order</text>
+  <text x="70" y="865" font-size="17" fill="#E2E8F0">1. Sender side: Dograh &#8594; Agent Runs &#8594; the run &#8594; webhook / tool call result (status code + response).</text>
+  <text x="70" y="898" font-size="17" fill="#E2E8F0">2. Front door: Caddy access log on the VM: <tspan class="mono" fill="#FBBF24">/var/log/caddy/caddy.log</tspan> (every request, its status and header names).</text>
+  <text x="70" y="931" font-size="17" fill="#E2E8F0">3. Receiver: n8n &#8594; Executions. If it is EMPTY but the sender says "sent", the request was rejected (403/404) before the workflow.</text>
+</svg>

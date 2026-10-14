@@ -1,0 +1,9 @@
+node_modules/
+.DS_Store
+raw/
+out/*.mp4
+out/.*
+out/still*.png
+out/draft/
+out/check*/
+.venv/

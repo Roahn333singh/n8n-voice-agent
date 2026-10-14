@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="#0F172A" width="1600" height="1000" viewBox="0 0 1600 1000">
+  <defs>
+    <marker id="a" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L12,6 L0,12 z" fill="#334155"/></marker>
+    <marker id="g" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L12,6 L0,12 z" fill="#059669"/></marker>
+    <marker id="b" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L12,6 L0,12 z" fill="#2563EB"/></marker>
+    <style>
+      text { font-family: -apple-system, "Helvetica Neue", Arial, sans-serif; }
+      .mono { font-family: Menlo, "SF Mono", Consolas, monospace; white-space: pre; }
+      .muted { fill: #475569; }
+    </style>
+  </defs>
+  <rect width="1600" height="1000" fill="#F8FAFC"/>
+  <text x="800" y="55" text-anchor="middle" font-size="32" font-weight="700">Production deployment: what runs where</text>
+  <text x="800" y="90" text-anchor="middle" font-size="18" class="muted">One VM, three containers, one domain. Only Caddy is reachable from the internet.</text>
+
+  <!-- Left column -->
+  <rect x="30" y="150" width="250" height="120" rx="14" fill="#FFFFFF" stroke="#94A3B8" stroke-width="2"/>
+  <text x="155" y="190" text-anchor="middle" font-size="19" font-weight="700">You / client admin</text>
+  <text x="155" y="218" text-anchor="middle" font-size="15" class="muted">browser opens the n8n editor</text>
+  <text x="155" y="245" text-anchor="middle" font-size="14" class="mono">https://n8n.client.com</text>
+
+  <rect x="30" y="380" width="250" height="180" rx="14" fill="#F5F3FF" stroke="#7C3AED" stroke-width="2"/>
+  <text x="155" y="420" text-anchor="middle" font-size="20" font-weight="700" fill="#6D28D9">Dograh</text>
+  <text x="155" y="448" text-anchor="middle" font-size="15">voice agent (published)</text>
+  <text x="155" y="474" text-anchor="middle" font-size="14" class="muted">API Trigger &#183; Agent nodes</text>
+  <text x="155" y="498" text-anchor="middle" font-size="14" class="muted">"Call completed" webhook</text>
+  <text x="155" y="535" text-anchor="middle" font-size="13" class="muted">credential: webhook secret</text>
+
+  <rect x="30" y="720" width="250" height="110" rx="14" fill="#FFFFFF" stroke="#94A3B8" stroke-width="2"/>
+  <text x="155" y="760" text-anchor="middle" font-size="19" font-weight="700">Customer phone</text>
+  <text x="155" y="790" text-anchor="middle" font-size="15" class="muted">via Twilio number in Dograh</text>
+  <line x1="155" y1="565" x2="155" y2="712" stroke="#334155" stroke-width="3" marker-end="url(#a)"/>
+  <text x="168" y="645" font-size="14" class="muted">voice call</text>
+
+  <!-- DNS -->
+  <rect x="400" y="120" width="820" height="56" rx="12" fill="#FFFBEB" stroke="#F59E0B" stroke-width="2"/>
+  <text x="810" y="155" text-anchor="middle" font-size="16"><tspan font-weight="700">DNS:</tspan> <tspan class="mono">n8n.client.com  A  34.x.x.x</tspan>   (reserved STATIC IP, never changes on reboot)</text>
+
+  <!-- VM -->
+  <rect x="400" y="200" width="820" height="760" rx="18" fill="#FFFFFF" stroke="#0F172A" stroke-width="3"/>
+  <text x="425" y="236" font-size="20" font-weight="700">GCP VM  (e2-medium &#183; 2 vCPU &#183; 4 GB &#183; 30 GB disk &#183; Debian/Ubuntu)</text>
+  <rect x="420" y="252" width="780" height="40" rx="8" fill="#FEF2F2" stroke="#FCA5A5"/>
+  <text x="810" y="278" text-anchor="middle" font-size="15"><tspan font-weight="700" fill="#B91C1C">Firewall:</tspan> allow 443 + 80 (HTTPS + certificate) &#183; 22 only from your IP &#183; block everything else</text>
+
+  <rect x="420" y="310" width="780" height="360" rx="14" fill="#EFF6FF" stroke="#93C5FD" stroke-width="2" stroke-dasharray="8 5"/>
+  <text x="440" y="340" font-size="16" font-weight="700" fill="#1D4ED8">docker compose  (deploy/docker-compose.yml)</text>
+
+  <rect x="440" y="360" width="220" height="160" rx="12" fill="#FFFFFF" stroke="#0EA5E9" stroke-width="2"/>
+  <text x="550" y="395" text-anchor="middle" font-size="19" font-weight="700" fill="#0369A1">Caddy</text>
+  <text x="550" y="422" text-anchor="middle" font-size="14">ports 80 / 443 (public)</text>
+  <text x="550" y="446" text-anchor="middle" font-size="14">auto HTTPS certificate</text>
+  <text x="550" y="470" text-anchor="middle" font-size="14">hides /metrics</text>
+  <text x="550" y="500" text-anchor="middle" font-size="13" class="muted">front door + access log</text>
+
+  <line x1="664" y1="440" x2="696" y2="440" stroke="#334155" stroke-width="3" marker-end="url(#a)"/>
+
+  <rect x="700" y="360" width="240" height="160" rx="12" fill="#FFF1F4" stroke="#EA4B71" stroke-width="2"/>
+  <text x="820" y="395" text-anchor="middle" font-size="19" font-weight="700" fill="#BE123C">n8n 2.41.6</text>
+  <text x="820" y="422" text-anchor="middle" font-size="14">port 5678 (private)</text>
+  <text x="820" y="446" text-anchor="middle" font-size="14">Voice-Agent workflow</text>
+  <text x="820" y="470" text-anchor="middle" font-size="14">credentials encrypted</text>
+  <text x="820" y="500" text-anchor="middle" font-size="13" class="muted">version pinned in .env</text>
+
+  <line x1="944" y1="440" x2="976" y2="440" stroke="#334155" stroke-width="3" marker-end="url(#a)"/>
+
+  <rect x="980" y="360" width="200" height="160" rx="12" fill="#F0FDF4" stroke="#16A34A" stroke-width="2"/>
+  <text x="1080" y="395" text-anchor="middle" font-size="19" font-weight="700" fill="#15803D">Postgres 16</text>
+  <text x="1080" y="422" text-anchor="middle" font-size="14">port 5432 (private)</text>
+  <text x="1080" y="446" text-anchor="middle" font-size="14">workflows, credentials,</text>
+  <text x="1080" y="470" text-anchor="middle" font-size="14">execution history</text>
+
+  <rect x="440" y="560" width="220" height="80" rx="10" fill="#F1F5F9" stroke="#CBD5E1"/>
+  <text x="550" y="592" text-anchor="middle" font-size="14" class="mono">caddy_data</text>
+  <text x="550" y="617" text-anchor="middle" font-size="13" class="muted">TLS certificates</text>
+  <rect x="700" y="560" width="240" height="80" rx="10" fill="#F1F5F9" stroke="#CBD5E1"/>
+  <text x="820" y="592" text-anchor="middle" font-size="14" class="mono">n8n_data</text>
+  <text x="820" y="617" text-anchor="middle" font-size="13" class="muted">n8n settings</text>
+  <rect x="980" y="560" width="200" height="80" rx="10" fill="#F1F5F9" stroke="#CBD5E1"/>
+  <text x="1080" y="592" text-anchor="middle" font-size="14" class="mono">postgres_data</text>
+  <text x="1080" y="617" text-anchor="middle" font-size="13" class="muted">the database files</text>
+  <text x="810" y="660" text-anchor="middle" font-size="13" class="muted">Docker volumes: survive container restarts and upgrades</text>
+
+  <rect x="440" y="700" width="230" height="110" rx="12" fill="#FFF7ED" stroke="#FB923C" stroke-width="2"/>
+  <text x="555" y="735" text-anchor="middle" font-size="17" font-weight="700" fill="#C2410C">.env  (chmod 600)</text>
+  <text x="555" y="762" text-anchor="middle" font-size="13">DOMAIN &#183; DB_PASSWORD</text>
+  <text x="555" y="784" text-anchor="middle" font-size="13">N8N_ENCRYPTION_KEY</text>
+
+  <rect x="690" y="700" width="250" height="110" rx="12" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
+  <text x="815" y="735" text-anchor="middle" font-size="17" font-weight="700">cron: backup.sh</text>
+  <text x="815" y="762" text-anchor="middle" font-size="13">nightly pg_dump + workflows</text>
+  <text x="815" y="784" text-anchor="middle" font-size="13">keeps 14 days locally</text>
+
+  <rect x="960" y="700" width="220" height="110" rx="12" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
+  <text x="1070" y="735" text-anchor="middle" font-size="17" font-weight="700">Ops Agent</text>
+  <text x="1070" y="762" text-anchor="middle" font-size="13">memory, disk, logs,</text>
+  <text x="1070" y="784" text-anchor="middle" font-size="13">n8n metrics</text>
+
+  <text x="810" y="860" text-anchor="middle" font-size="15" class="muted">Inbound traffic: internet &#8594; Caddy &#8594; n8n.  Outbound calls (Dograh API, Google Sheets) leave the VM directly.</text>
+  <text x="810" y="890" text-anchor="middle" font-size="15" class="muted">Postgres and n8n ports are bound to the VM only, never exposed publicly.</text>
+
+  <!-- Right column -->
+  <rect x="1290" y="150" width="270" height="140" rx="14" fill="#FFFFFF" stroke="#16A34A" stroke-width="2"/>
+  <text x="1425" y="190" text-anchor="middle" font-size="19" font-weight="700" fill="#15803D">Google Sheets API</text>
+  <text x="1425" y="218" text-anchor="middle" font-size="14">Outreach_Queue &#183; Call_Attempts</text>
+  <text x="1425" y="242" text-anchor="middle" font-size="14">Feedback</text>
+  <text x="1425" y="268" text-anchor="middle" font-size="13" class="muted">OAuth2 credential in n8n</text>
+
+  <rect x="1290" y="690" width="270" height="110" rx="14" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
+  <text x="1425" y="728" text-anchor="middle" font-size="18" font-weight="700">Cloud Monitoring</text>
+  <text x="1425" y="754" text-anchor="middle" font-size="14">dashboard, uptime check,</text>
+  <text x="1425" y="776" text-anchor="middle" font-size="14">alerts by email</text>
+
+  <rect x="1290" y="830" width="270" height="110" rx="14" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
+  <text x="1425" y="868" text-anchor="middle" font-size="18" font-weight="700">Cloud Storage bucket</text>
+  <text x="1425" y="894" text-anchor="middle" font-size="14">off-server backup copies</text>
+  <text x="1425" y="916" text-anchor="middle" font-size="13" class="muted">GCS_BUCKET in backup.sh</text>
+
+  <!-- Arrows -->
+  <path d="M280,210 C340,210 350,148 396,148" fill="none" stroke="#334155" stroke-width="3" marker-end="url(#a)"/>
+
+  <line x1="284" y1="430" x2="436" y2="430" stroke="#059669" stroke-width="4" marker-end="url(#g)"/>
+  <text x="290" y="420" font-size="12" fill="#047857" font-weight="700">webhook POST</text>
+  <text x="290" y="448" font-size="12" fill="#047857">+ Bearer secret</text>
+
+  <path d="M820,522 L820,540 L388,540 L388,500 L286,500" fill="none" stroke="#2563EB" stroke-width="3" marker-end="url(#b)"/>
+  <text x="290" y="490" font-size="12" fill="#1D4ED8" font-weight="700">start call</text>
+  <text x="290" y="518" font-size="12" fill="#1D4ED8">+ X-API-Key</text>
+
+  <path d="M820,358 L820,301 L1250,301 L1250,220 L1286,220" fill="none" stroke="#2563EB" stroke-width="3" marker-end="url(#b)"/>
+  <text x="1185" y="333" text-anchor="end" font-size="12" fill="#1D4ED8" font-weight="700">n8n reads / appends / updates rows</text>
+
+  <line x1="1184" y1="755" x2="1286" y2="745" stroke="#334155" stroke-width="3" marker-end="url(#a)"/>
+  <path d="M815,812 L815,830 L1240,830 L1240,885 L1286,885" fill="none" stroke="#334155" stroke-width="3" marker-end="url(#a)"/>
+</svg>

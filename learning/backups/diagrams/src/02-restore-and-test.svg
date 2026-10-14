@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="#1F2937" width="1500" height="2000" viewBox="0 0 1500 2000">
+  <defs>
+    <filter id="rough" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="19" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <pattern id="ruled" width="1500" height="44" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="43" x2="1500" y2="43" stroke="#D6E6F5" stroke-width="2"/>
+    </pattern>
+    <style>
+      text { font-family: "Noteworthy", "Chalkboard SE", "Comic Sans MS", cursive; }
+      .h { font-family: "Marker Felt", "Chalkboard SE", cursive; }
+      .code { font-family: Menlo, monospace; white-space: pre; }
+    </style>
+  </defs>
+
+  <rect width="1500" height="2000" fill="#FFFDF4"/>
+  <rect y="150" width="1500" height="1850" fill="url(#ruled)"/>
+  <line x1="115" y1="0" x2="115" y2="2000" stroke="#F4A3A3" stroke-width="3"/>
+
+  <text x="150" y="92" class="h" font-size="58" fill="#1E3A8A">Restoring + testing backups</text>
+  <text x="150" y="138" font-size="26" fill="#64748B">a backup you never tested is only a hope   |   page 2 of 2</text>
+
+  <!-- A: two questions -->
+  <text x="150" y="215" class="h" font-size="38" fill="#7C3AED">Two questions every backup plan answers</text>
+  <rect x="150" y="240" width="620" height="230" rx="14" fill="#FEF3C7" stroke="#D97706" stroke-width="3" filter="url(#rough)"/>
+  <text x="175" y="285" class="h" font-size="28" fill="#92400E">How much could I lose?</text>
+  <text x="175" y="318" font-size="19" fill="#64748B">(pros call it RPO, recovery POINT)</text>
+  <text x="175" y="360" font-size="22">= time since the last backup.</text>
+  <text x="175" y="396" font-size="22">Us: at most ~1 day of n8n history.</text>
+  <text x="175" y="432" font-size="22">Calls + feedback also sit in the Sheet</text>
+  <text x="175" y="458" font-size="22">and in Dograh, so little is really lost.</text>
+  <rect x="820" y="240" width="620" height="230" rx="14" fill="#DBEAFE" stroke="#2563EB" stroke-width="3" filter="url(#rough)"/>
+  <text x="845" y="285" class="h" font-size="28" fill="#1D4ED8">How long to get back?</text>
+  <text x="845" y="318" font-size="19" fill="#64748B">(pros call it RTO, recovery TIME)</text>
+  <text x="845" y="360" font-size="22">Database from the nightly file: 8 s</text>
+  <text x="845" y="396" font-size="22">(measured tonight, see below).</text>
+  <text x="845" y="432" font-size="22">Whole server from a snapshot:</text>
+  <text x="845" y="458" font-size="22">about 15 minutes of clicking.</text>
+
+  <!-- B: which restore -->
+  <text x="150" y="550" class="h" font-size="38" fill="#7C3AED">Which restore for which problem (smallest first)</text>
+
+  <rect x="150" y="575" width="1290" height="175" rx="14" fill="#FFFFFF" stroke="#16A34A" stroke-width="3" filter="url(#rough)"/>
+  <text x="175" y="618" class="h" font-size="28" fill="#15803D">A. "I broke one workflow"</text>
+  <text x="175" y="658" font-size="22">First try n8n itself: open the workflow &gt; clock icon (Version history) &gt; pick an older version &gt; Restore.</text>
+  <text x="175" y="694" font-size="22">Deleted it completely? Its JSON is in workflows-DATE.json from the nightly backup:</text>
+  <text x="175" y="728" class="code" font-size="18">docker compose exec -u node n8n n8n import:workflow --input=/tmp/one-workflow.json</text>
+
+  <rect x="150" y="770" width="1290" height="175" rx="14" fill="#FFFFFF" stroke="#D97706" stroke-width="3" filter="url(#rough)"/>
+  <text x="175" y="813" class="h" font-size="28" fill="#B45309">B. "The database is wrong" (bad import, mass delete)</text>
+  <text x="175" y="853" font-size="22">Put back the whole database from a nightly file. Asks you to type RESTORE first.</text>
+  <text x="175" y="890" class="code" font-size="18">cd /opt/voice-agent &amp;&amp; sudo ./scripts/restore.sh /var/backups/voice-agent/n8n-db-DATE.sql.gz</text>
+  <text x="175" y="926" font-size="20" fill="#B45309">Everything after that backup is lost from n8n, so pick the newest good file.</text>
+
+  <rect x="150" y="965" width="1290" height="215" rx="14" fill="#FFFFFF" stroke="#DC2626" stroke-width="3" filter="url(#rough)"/>
+  <text x="175" y="1008" class="h" font-size="28" fill="#B91C1C">C. "The server is gone" (disk dead, VM deleted, hacked)</text>
+  <text x="175" y="1048" font-size="22">Cloud Console &gt; Compute Engine &gt; Snapshots &gt; pick one (before the problem) &gt; Create instance.</text>
+  <text x="175" y="1084" font-size="22">Give the new VM the static IP n8n-voice-agent-ip, so the address and Dograh webhook stay the same.</text>
+  <text x="175" y="1120" font-size="22">Everything comes back: Docker, Postgres, n8n, Caddy, backups folder, .env with the key.</text>
+  <text x="175" y="1156" font-size="20" fill="#B91C1C">No snapshot left? New VM + deploy bundle + .env with the KEY from Passwords + restore.sh.</text>
+
+  <!-- C: drill -->
+  <text x="150" y="1260" class="h" font-size="38" fill="#7C3AED">The restore drill (proves it works, touches nothing)</text>
+  <rect x="150" y="1285" width="1290" height="60" rx="6" fill="#F8FAFC" stroke="#64748B" stroke-width="2"/>
+  <text x="170" y="1325" class="code" font-size="21">cd /opt/voice-agent &amp;&amp; sudo ./scripts/restore-test.sh</text>
+  <text x="150" y="1390" font-size="22">It starts a throwaway Postgres, loads the newest backup into it, counts, compares, deletes it.</text>
+  <rect x="150" y="1410" width="700" height="280" rx="10" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
+  <text x="175" y="1450" class="code" font-size="20" font-weight="bold">table           backup     live</text>
+  <text x="175" y="1488" class="code" font-size="20">users                1        1</text>
+  <text x="175" y="1522" class="code" font-size="20">credentials          3        3</text>
+  <text x="175" y="1556" class="code" font-size="20">workflows            3        3</text>
+  <text x="175" y="1590" class="code" font-size="20">published            2        2</text>
+  <text x="175" y="1624" class="code" font-size="20" fill="#64748B">executions        4835     4893</text>
+  <text x="175" y="1665" font-size="19" fill="#64748B">11 Oct, 02:14. Restored in 8 seconds.</text>
+  <text x="890" y="1460" font-size="23" fill="#047857">&#10003; everything matches</text>
+  <text x="890" y="1500" font-size="22">Executions differ on purpose:</text>
+  <text x="890" y="1536" font-size="22">n8n kept running every minute</text>
+  <text x="890" y="1572" font-size="22">after the 01:18 backup.</text>
+  <text x="890" y="1630" font-size="22" fill="#7C3AED">Do it once a month, and</text>
+  <text x="890" y="1666" font-size="22" fill="#7C3AED">after changing backup.sh.</text>
+
+  <!-- D: monthly check -->
+  <rect x="150" y="1720" width="1290" height="185" rx="14" fill="#F5F3FF" stroke="#7C3AED" stroke-width="3" filter="url(#rough)"/>
+  <text x="175" y="1762" class="h" font-size="30" fill="#6D28D9">5-minute monthly check</text>
+  <text x="175" y="1802" font-size="22">&#9744; restore-test.sh says everything matches     &#9744; newest file in /var/backups/voice-agent is from last night</text>
+  <text x="175" y="1840" font-size="22">&#9744; Console &gt; Snapshots shows today's snapshot     &#9744; demo-reset.sh --check is all [OK]</text>
+  <text x="175" y="1878" font-size="22">&#9744; the encryption key is still in the Passwords app</text>
+
+  <text x="1440" y="1960" text-anchor="end" class="h" font-size="32" fill="#1E3A8A">details: learning/backups/README.md</text>
+</svg>

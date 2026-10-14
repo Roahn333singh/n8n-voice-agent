@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="#1F2937" width="1500" height="2000" viewBox="0 0 1500 2000">
+  <defs>
+    <filter id="rough" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="9" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <pattern id="ruled" width="1500" height="44" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="43" x2="1500" y2="43" stroke="#D6E6F5" stroke-width="2"/>
+    </pattern>
+    <marker id="ar" markerWidth="16" markerHeight="16" refX="12" refY="8" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L14,8 L0,16" fill="none" stroke="#1F2937" stroke-width="3"/></marker>
+    <marker id="arR" markerWidth="16" markerHeight="16" refX="12" refY="8" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L14,8 L0,16" fill="none" stroke="#DC2626" stroke-width="3"/></marker>
+    <style>
+      text { font-family: "Noteworthy", "Chalkboard SE", "Comic Sans MS", cursive; }
+      .h { font-family: "Marker Felt", "Chalkboard SE", cursive; }
+      .code { font-family: Menlo, monospace; white-space: pre; }
+    </style>
+  </defs>
+
+  <rect width="1500" height="2000" fill="#FFFDF4"/>
+  <rect y="150" width="1500" height="1850" fill="url(#ruled)"/>
+  <line x1="115" y1="0" x2="115" y2="2000" stroke="#F4A3A3" stroke-width="3"/>
+
+  <text x="150" y="92" class="h" font-size="58" fill="#1E3A8A">Step 3: The move, minute by minute</text>
+  <text x="150" y="138" font-size="26" fill="#64748B">site down from 01:12:50 to 01:15:00 (about 2 min)   |   page 2 of 2</text>
+
+  <!-- timeline -->
+  <line x1="185" y1="250" x2="185" y2="905" stroke="#94A3B8" stroke-width="4" stroke-dasharray="10 8"/>
+  <g filter="url(#rough)" stroke-width="3">
+    <circle cx="185" cy="260" r="26" fill="#DBEAFE" stroke="#2563EB"/>
+    <circle cx="185" cy="385" r="26" fill="#FEE2E2" stroke="#DC2626"/>
+    <circle cx="185" cy="510" r="26" fill="#FEF3C7" stroke="#D97706"/>
+    <circle cx="185" cy="635" r="26" fill="#FEF3C7" stroke="#D97706"/>
+    <circle cx="185" cy="760" r="26" fill="#FEF3C7" stroke="#D97706"/>
+    <circle cx="185" cy="885" r="26" fill="#DCFCE7" stroke="#16A34A"/>
+  </g>
+  <text x="185" y="270" text-anchor="middle" class="h" font-size="28">1</text>
+  <text x="185" y="395" text-anchor="middle" class="h" font-size="28">2</text>
+  <text x="185" y="520" text-anchor="middle" class="h" font-size="28">3</text>
+  <text x="185" y="645" text-anchor="middle" class="h" font-size="28">4</text>
+  <text x="185" y="770" text-anchor="middle" class="h" font-size="28">5</text>
+  <text x="185" y="895" text-anchor="middle" class="h" font-size="28">6</text>
+
+  <text x="240" y="268" class="h" font-size="30">Prepare (site still up): snapshot, install Compose, start Postgres</text>
+  <text x="240" y="310" class="code" font-size="21" fill="#1D4ED8">sudo apt-get install -y docker-compose  &amp;&amp;  docker compose up -d postgres</text>
+
+  <text x="240" y="393" class="h" font-size="30"><tspan fill="#B91C1C">01:12:50</tspan>  Stop the old n8n (kept, not deleted = undo button)</text>
+  <text x="240" y="435" class="code" font-size="21" fill="#1D4ED8">docker update --restart=no n8n  &amp;&amp;  docker stop n8n</text>
+
+  <text x="240" y="518" class="h" font-size="30">Export EVERYTHING from SQLite  <tspan font-size="24" fill="#64748B">&#8594; entities.zip, 11,377 records</tspan></text>
+  <text x="240" y="560" class="code" font-size="21" fill="#1D4ED8">n8n export:entities --includeExecutionHistoryDataTables=true</text>
+
+  <text x="240" y="643" class="h" font-size="30">Import into Postgres  <tspan font-size="24" fill="#64748B">(login, credentials, workflows, history)</tspan></text>
+  <text x="240" y="685" class="code" font-size="21" fill="#1D4ED8">n8n import:entities --inputDir=/migration --truncateTables=true</text>
+
+  <text x="240" y="768" class="h" font-size="30">Reuse the HTTPS certificate, switch off old Caddy, start all 3</text>
+  <text x="240" y="810" class="code" font-size="21" fill="#1D4ED8">systemctl disable --now caddy  &amp;&amp;  docker compose up -d</text>
+
+  <text x="240" y="893" class="h" font-size="30"><tspan fill="#047857">01:15:00</tspan>  Site back:  https://n8n.example.com/healthz = 200</text>
+
+  <!-- the trap -->
+  <text x="150" y="1000" class="h" font-size="40" fill="#B91C1C">The trap: the ticket machine was not reset</text>
+  <g filter="url(#rough)" stroke-width="3">
+    <rect x="150" y="1030" width="380" height="140" rx="12" fill="#F1F5F9" stroke="#64748B"/>
+    <rect x="590" y="1030" width="320" height="140" rx="12" fill="#FEE2E2" stroke="#DC2626"/>
+    <rect x="970" y="1030" width="470" height="140" rx="12" fill="#FEE2E2" stroke="#DC2626"/>
+  </g>
+  <text x="340" y="1080" text-anchor="middle" class="h" font-size="28">Imported runs</text>
+  <text x="340" y="1125" text-anchor="middle" font-size="24">id 1, 2, 3 ... 4832</text>
+  <text x="750" y="1080" text-anchor="middle" class="h" font-size="28">Postgres counter</text>
+  <text x="750" y="1125" text-anchor="middle" font-size="24" fill="#B91C1C">"next id = 1"  (!)</text>
+  <text x="1205" y="1080" text-anchor="middle" class="h" font-size="28">New run wants id 1</text>
+  <text x="1205" y="1125" text-anchor="middle" font-size="24" fill="#B91C1C">already taken &#8594; run NOT saved</text>
+  <line x1="912" y1="1100" x2="964" y2="1100" stroke="#DC2626" stroke-width="3" marker-end="url(#arR)"/>
+  <text x="150" y="1220" font-size="24">How I spotted it: the newest run in the database was still from BEFORE the move.</text>
+  <text x="150" y="1258" font-size="24">Why: the import copies rows WITH their ids, but leaves the counter (a "sequence") at 1.</text>
+  <rect x="150" y="1285" width="1290" height="150" rx="14" fill="#ECFDF5" stroke="#059669" stroke-width="3" filter="url(#rough)"/>
+  <text x="175" y="1328" class="h" font-size="28" fill="#047857">Fix: move every counter to the highest id already used</text>
+  <text x="175" y="1370" class="code" font-size="20">docker compose exec -T postgres psql -U n8n -d n8n &lt; scripts/fix-sequences.sql</text>
+  <text x="175" y="1412" font-size="24" fill="#047857">&#10003; after: next run got id 4833 and was saved. Always do this after an import!</text>
+
+  <!-- checks -->
+  <text x="150" y="1515" class="h" font-size="36" fill="#7C3AED">Checks I ran</text>
+  <text x="150" y="1560" font-size="23"><tspan fill="#16A34A" font-weight="bold">&#10003;</tspan> same 1 user, 3 credentials, 3 workflows, 4832 runs</text>
+  <text x="150" y="1598" font-size="23"><tspan fill="#16A34A" font-weight="bold">&#10003;</tspan> fake signed call: Feedback row + Completed</text>
+  <text x="150" y="1636" font-size="23"><tspan fill="#16A34A" font-weight="bold">&#10003;</tspan> webhook without the secret = 403</text>
+  <text x="150" y="1674" font-size="23"><tspan fill="#16A34A" font-weight="bold">&#10003;</tspan> old HTTPS certificate reused (no new one)</text>
+  <text x="150" y="1712" font-size="23"><tspan fill="#16A34A" font-weight="bold">&#10003;</tspan> dashboard still gets metrics + logs</text>
+
+  <!-- backups -->
+  <text x="820" y="1515" class="h" font-size="36" fill="#7C3AED">Nightly backup (cron)</text>
+  <rect x="820" y="1535" width="620" height="200" rx="12" fill="#FFFFFF" stroke="#64748B" stroke-width="3" filter="url(#rough)"/>
+  <text x="850" y="1590" class="code" font-size="34" font-weight="bold">30   2   *   *   *</text>
+  <g font-size="18" fill="#64748B" text-anchor="middle">
+    <text x="871" y="1625">minute</text>
+    <text x="963" y="1625">hour</text>
+    <text x="1045" y="1625">day</text>
+    <text x="1127" y="1625">month</text>
+    <text x="1209" y="1625">weekday</text>
+  </g>
+  <text x="850" y="1665" font-size="23">= every day at 02:30, runs scripts/backup.sh</text>
+  <text x="850" y="1703" font-size="23">&#8594; /var/backups/voice-agent (kept 14 days)</text>
+  <text x="820" y="1765" font-size="21" fill="#475569">+ Google's daily disk snapshot = copy off the server</text>
+
+  <!-- undo -->
+  <rect x="150" y="1800" width="1290" height="95" rx="10" fill="#FEF3C7" stroke="#D97706" stroke-width="2"/>
+  <text x="175" y="1838" class="h" font-size="26" fill="#92400E">Undo (if ever needed): stop the new stack, start the old one</text>
+  <text x="175" y="1876" class="code" font-size="19">docker compose down; systemctl enable --now caddy; docker start n8n</text>
+
+  <text x="1440" y="1960" text-anchor="end" class="h" font-size="32" fill="#1E3A8A">next: Step 5, demo script + backup recording  &#8594;</text>
+</svg>

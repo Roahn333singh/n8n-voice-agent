@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="#1F2937" width="1500" height="2000" viewBox="0 0 1500 2000">
+  <defs>
+    <filter id="rough" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="7" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <pattern id="ruled" width="1500" height="44" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="43" x2="1500" y2="43" stroke="#D6E6F5" stroke-width="2"/>
+    </pattern>
+    <marker id="ar" markerWidth="16" markerHeight="16" refX="12" refY="8" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L14,8 L0,16" fill="none" stroke="#1F2937" stroke-width="3"/></marker>
+    <style>
+      text { font-family: "Noteworthy", "Chalkboard SE", "Comic Sans MS", cursive; }
+      .h { font-family: "Marker Felt", "Chalkboard SE", cursive; }
+      .code { font-family: Menlo, monospace; white-space: pre; }
+    </style>
+  </defs>
+
+  <rect width="1500" height="2000" fill="#FFFDF4"/>
+  <rect y="150" width="1500" height="1850" fill="url(#ruled)"/>
+  <line x1="115" y1="0" x2="115" y2="2000" stroke="#F4A3A3" stroke-width="3"/>
+
+  <text x="150" y="92" class="h" font-size="58" fill="#1E3A8A">Step 3: Docker Compose + Postgres</text>
+  <text x="150" y="138" font-size="26" fill="#64748B">11 Oct 2026   |   about 2 minutes of downtime   |   page 1 of 2</text>
+
+  <!-- before / after -->
+  <rect x="150" y="245" width="550" height="500" rx="14" fill="#FFFFFF" stroke="#94A3B8" stroke-width="3" filter="url(#rough)"/>
+  <text x="175" y="288" class="h" font-size="32" fill="#B91C1C">BEFORE</text>
+  <rect x="170" y="305" width="510" height="300" rx="12" fill="none" stroke="#64748B" stroke-width="2" stroke-dasharray="8 6"/>
+  <text x="190" y="340" font-size="20" fill="#64748B">the VM</text>
+  <g filter="url(#rough)" stroke-width="3">
+    <rect x="200" y="360" width="450" height="80" rx="12" fill="#FEF3C7" stroke="#D97706"/>
+    <rect x="200" y="482" width="450" height="100" rx="12" fill="#DBEAFE" stroke="#2563EB"/>
+  </g>
+  <text x="425" y="408" text-anchor="middle" font-size="24">Caddy (installed on the VM itself)</text>
+  <line x1="425" y1="442" x2="425" y2="476" stroke="#1F2937" stroke-width="3" marker-end="url(#ar)"/>
+  <text x="425" y="522" text-anchor="middle" font-size="24" font-weight="bold">n8n container (n8n:latest)</text>
+  <text x="425" y="560" text-anchor="middle" font-size="21" fill="#475569">+ SQLite database file inside</text>
+  <text x="175" y="650" font-size="22">&#8226; started by one long "docker run" command</text>
+  <text x="175" y="686" font-size="22">&#8226; ":latest" = version can change by surprise</text>
+  <text x="175" y="722" font-size="22">&#8226; no automatic backups</text>
+
+  <rect x="800" y="245" width="640" height="500" rx="14" fill="#FFFFFF" stroke="#94A3B8" stroke-width="3" filter="url(#rough)"/>
+  <text x="825" y="288" class="h" font-size="32" fill="#047857">AFTER</text>
+  <rect x="820" y="305" width="600" height="300" rx="12" fill="none" stroke="#64748B" stroke-width="2" stroke-dasharray="8 6"/>
+  <text x="840" y="340" font-size="20" fill="#64748B">the VM (same IP, same address)</text>
+  <rect x="840" y="355" width="560" height="235" rx="12" fill="#F5F3FF" stroke="#7C3AED" stroke-width="3" stroke-dasharray="12 6"/>
+  <text x="860" y="388" font-size="21" fill="#6D28D9">docker compose: one file runs all 3</text>
+  <g filter="url(#rough)" stroke-width="3">
+    <rect x="860" y="405" width="150" height="110" rx="12" fill="#FEF3C7" stroke="#D97706"/>
+    <rect x="1050" y="405" width="150" height="110" rx="12" fill="#DBEAFE" stroke="#2563EB"/>
+    <rect x="1240" y="405" width="150" height="110" rx="12" fill="#DCFCE7" stroke="#16A34A"/>
+  </g>
+  <text x="935" y="452" text-anchor="middle" class="h" font-size="28">Caddy</text>
+  <text x="935" y="488" text-anchor="middle" font-size="19" fill="#475569">HTTPS</text>
+  <text x="1125" y="452" text-anchor="middle" class="h" font-size="28">n8n</text>
+  <text x="1125" y="488" text-anchor="middle" font-size="19" fill="#475569">2.41.6 pinned</text>
+  <text x="1315" y="452" text-anchor="middle" class="h" font-size="28">Postgres</text>
+  <text x="1315" y="488" text-anchor="middle" font-size="19" fill="#475569">database</text>
+  <line x1="1012" y1="460" x2="1044" y2="460" stroke="#1F2937" stroke-width="3" marker-end="url(#ar)"/>
+  <line x1="1202" y1="460" x2="1234" y2="460" stroke="#1F2937" stroke-width="3" marker-end="url(#ar)"/>
+  <text x="1120" y="562" text-anchor="middle" font-size="22" fill="#047857">+ nightly backup at 02:30</text>
+  <text x="825" y="650" font-size="22">&#8226; the whole setup is written in docker-compose.yml</text>
+  <text x="825" y="686" font-size="22">&#8226; the same files work for a client server (Path B)</text>
+  <text x="825" y="722" font-size="22">&#8226; all 3 start again by themselves after a reboot</text>
+
+  <!-- why postgres -->
+  <text x="150" y="815" class="h" font-size="40" fill="#7C3AED">Why Postgres instead of SQLite?</text>
+  <rect x="150" y="840" width="620" height="235" rx="14" fill="#FEF2F2" stroke="#DC2626" stroke-width="3" filter="url(#rough)"/>
+  <text x="175" y="885" class="h" font-size="30" fill="#B91C1C">SQLite = one notebook</text>
+  <text x="175" y="928" font-size="23">&#8226; a single file inside the n8n folder</text>
+  <text x="175" y="966" font-size="23">&#8226; only one writer at a time</text>
+  <text x="175" y="1004" font-size="23">&#8226; fine for testing, risky when busy</text>
+  <text x="175" y="1042" font-size="23">&#8226; backup = copying a file while it is written</text>
+
+  <rect x="820" y="840" width="620" height="235" rx="14" fill="#ECFDF5" stroke="#059669" stroke-width="3" filter="url(#rough)"/>
+  <text x="845" y="885" class="h" font-size="30" fill="#047857">Postgres = a filing office</text>
+  <text x="845" y="928" font-size="23">&#8226; a real database server (its own container)</text>
+  <text x="845" y="966" font-size="23">&#8226; many readers and writers at once</text>
+  <text x="845" y="1004" font-size="23">&#8226; safe backups while it runs (pg_dump)</text>
+  <text x="845" y="1042" font-size="23">&#8226; what n8n recommends for production</text>
+
+  <!-- folder -->
+  <text x="150" y="1150" class="h" font-size="40" fill="#7C3AED">Everything lives in one folder: /opt/voice-agent</text>
+  <rect x="150" y="1175" width="1290" height="290" rx="10" fill="#F8FAFC" stroke="#64748B" stroke-width="2"/>
+  <text x="180" y="1220" class="code" font-size="22" font-weight="bold">/opt/voice-agent/</text>
+  <text x="180" y="1258" class="code" font-size="22">  docker-compose.yml          the recipe: 3 services, versions, ports</text>
+  <text x="180" y="1296" class="code" font-size="22">  Caddyfile                   HTTPS + forward visitors to n8n</text>
+  <text x="180" y="1334" class="code" font-size="22" fill="#B91C1C">  .env                        SECRETS: key + DB password (root only)</text>
+  <text x="180" y="1372" class="code" font-size="22">  scripts/backup.sh           database dump + workflows, every night</text>
+  <text x="180" y="1410" class="code" font-size="22">  scripts/fix-sequences.sql   repair after an import (see page 2)</text>
+  <text x="180" y="1448" class="code" font-size="22" fill="#64748B">  (old n8n container + its data: stopped, kept as the undo button)</text>
+
+  <!-- encryption key -->
+  <text x="150" y="1545" class="h" font-size="40" fill="#B91C1C">Golden rule: keep the SAME encryption key</text>
+  <rect x="150" y="1570" width="1290" height="310" rx="14" fill="#F5F3FF" stroke="#7C3AED" stroke-width="3" filter="url(#rough)"/>
+  <g filter="url(#rough)" stroke-width="3">
+    <rect x="185" y="1610" width="230" height="130" rx="10" fill="#FFFFFF" stroke="#1F2937"/>
+    <path d="M250,1610 L250,1585 A50,40 0 0 1 350,1585 L350,1610" fill="none" stroke="#1F2937"/>
+    <circle cx="300" cy="1660" r="14" fill="#1F2937" stroke="none"/>
+    <rect x="294" y="1665" width="12" height="35" fill="#1F2937" stroke="none"/>
+  </g>
+  <text x="300" y="1728" text-anchor="middle" font-size="19" fill="#475569">Google + Dograh logins</text>
+  <text x="450" y="1625" font-size="24">n8n keeps your saved logins LOCKED with N8N_ENCRYPTION_KEY.</text>
+  <text x="450" y="1663" font-size="24">New server + new key = it cannot open them, every node breaks.</text>
+  <text x="450" y="1701" font-size="24">So the old key went straight into .env, never shown on screen:</text>
+  <rect x="185" y="1765" width="1225" height="90" rx="6" fill="#FEF3C7" stroke="#D97706" stroke-width="2"/>
+  <text x="205" y="1800" class="code" font-size="20">echo N8N_ENCRYPTION_KEY=$(docker exec n8n printenv N8N_ENCRYPTION_KEY) &gt;&gt; .env</text>
+  <text x="205" y="1836" class="code" font-size="20" fill="#92400E">chmod 600 .env        # only root can read it</text>
+
+  <text x="1440" y="1940" text-anchor="end" class="h" font-size="32" fill="#1E3A8A">next page: the move, minute by minute  &#8594;</text>
+</svg>

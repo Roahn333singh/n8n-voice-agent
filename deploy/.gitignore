@@ -1,0 +1,4 @@
+.env
+*.sql.gz
+credentials.json
+n8n-migration/

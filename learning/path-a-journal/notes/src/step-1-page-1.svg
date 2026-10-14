@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="#1F2937" width="1500" height="2000" viewBox="0 0 1500 2000">
+  <defs>
+    <filter id="rough" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="7" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <pattern id="ruled" width="1500" height="44" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="43" x2="1500" y2="43" stroke="#D6E6F5" stroke-width="2"/>
+    </pattern>
+    <marker id="ar" markerWidth="16" markerHeight="16" refX="12" refY="8" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L14,8 L0,16" fill="none" stroke="#1F2937" stroke-width="3"/></marker>
+    <style>
+      text { font-family: "Noteworthy", "Chalkboard SE", "Comic Sans MS", cursive; }
+      .h { font-family: "Marker Felt", "Chalkboard SE", cursive; }
+      .code { font-family: Menlo, monospace; white-space: pre; }
+    </style>
+  </defs>
+
+  <rect width="1500" height="2000" fill="#FFFDF4"/>
+  <rect y="150" width="1500" height="1850" fill="url(#ruled)"/>
+  <line x1="115" y1="0" x2="115" y2="2000" stroke="#F4A3A3" stroke-width="3"/>
+
+  <text x="150" y="92" class="h" font-size="60" fill="#1E3A8A">Step 1: Make the server safe</text>
+  <text x="150" y="138" font-size="26" fill="#64748B">9 Oct 2026   |   about 15 minutes   |   zero downtime   |   page 1 of 2</text>
+
+  <rect x="150" y="172" width="1290" height="96" rx="10" fill="#EEF6FF" stroke="#3B82F6" stroke-width="3" filter="url(#rough)"/>
+  <text x="180" y="212" font-size="27"><tspan font-weight="bold">Goal:</tspan> before any demo, make sure the server can be UNDONE,</text>
+  <text x="180" y="250" font-size="27">can never LOSE its address, and has ROOM to grow.</text>
+
+  <!-- Section 1 -->
+  <text x="150" y="345" class="h" font-size="42" fill="#B91C1C">1. Snapshot = an UNDO button</text>
+
+  <g filter="url(#rough)" stroke="#1F2937" stroke-width="3" fill="none">
+    <ellipse cx="270" cy="410" rx="95" ry="26" fill="#E0E7FF"/>
+    <path d="M175,410 L175,540 A95,26 0 0 0 365,540 L365,410" fill="#E0E7FF"/>
+    <ellipse cx="270" cy="410" rx="95" ry="26"/>
+    <rect x="490" y="425" width="150" height="100" rx="14" fill="#F1F5F9"/>
+    <rect x="530" y="405" width="60" height="24" rx="6" fill="#F1F5F9"/>
+    <circle cx="565" cy="475" r="32" fill="#FFFFFF"/>
+    <circle cx="565" cy="475" r="16"/>
+    <rect x="760" y="395" width="180" height="190" fill="#FFFFFF" transform="rotate(4 850 490)"/>
+    <rect x="778" y="412" width="144" height="120" fill="#DBEAFE" transform="rotate(4 850 490)"/>
+  </g>
+  <text x="270" y="490" text-anchor="middle" font-size="24">disk</text>
+  <text x="270" y="520" text-anchor="middle" font-size="20" fill="#64748B">10 GB</text>
+  <text x="565" y="565" text-anchor="middle" font-size="22">click!</text>
+  <text x="852" y="572" text-anchor="middle" font-size="22" transform="rotate(4 850 490)">snapshot</text>
+  <line x1="380" y1="475" x2="475" y2="475" stroke="#1F2937" stroke-width="3" marker-end="url(#ar)"/>
+  <line x1="655" y1="475" x2="745" y2="480" stroke="#1F2937" stroke-width="3" marker-end="url(#ar)"/>
+
+  <text x="990" y="430" font-size="27">A photo of the WHOLE disk</text>
+  <text x="990" y="472" font-size="27">at one moment in time.</text>
+  <text x="990" y="524" font-size="27">Broke something later?</text>
+  <text x="990" y="566" font-size="27">Build a new disk from the photo.</text>
+
+  <rect x="150" y="625" width="1290" height="150" rx="6" fill="#FEF3C7" stroke="#D97706" stroke-width="3" filter="url(#rough)"/>
+  <text x="175" y="658" font-size="20" fill="#92400E" font-weight="bold">COMMAND</text>
+  <text x="175" y="694" class="code" font-size="23">gcloud compute disks snapshot n8n-vm \</text>
+  <text x="175" y="726" class="code" font-size="23">  --zone=asia-south1-c \</text>
+  <text x="175" y="758" class="code" font-size="23">  --snapshot-names=n8n-before-demo-upgrade-20261009</text>
+
+  <text x="150" y="820" font-size="25"><tspan font-weight="bold">Click way:</tspan> Compute Engine &gt; Disks &gt; n8n-vm &gt; CREATE SNAPSHOT</text>
+  <text x="150" y="862" font-size="25"><tspan font-weight="bold">Result:</tspan> snapshot READY. It only stores used data (about 128 MB, not 10 GB).</text>
+
+  <!-- Section 2 -->
+  <text x="150" y="950" class="h" font-size="42" fill="#B91C1C">2. Make the IP address permanent</text>
+
+  <rect x="150" y="985" width="560" height="225" rx="14" fill="#FEF2F2" stroke="#DC2626" stroke-width="3" filter="url(#rough)"/>
+  <text x="180" y="1030" class="h" font-size="30" fill="#B91C1C">EPHEMERAL (before)</text>
+  <text x="180" y="1074" class="code" font-size="24">YOUR_SERVER_IP</text>
+  <text x="180" y="1116" font-size="25">like a temporary SIM number:</text>
+  <text x="180" y="1154" font-size="25">stop/start the VM and you may</text>
+  <text x="180" y="1192" font-size="25">get a NEW number</text>
+  <path d="M630,1010 L690,1070 M690,1010 L630,1070" stroke="#DC2626" stroke-width="7" stroke-linecap="round" filter="url(#rough)"/>
+
+  <line x1="725" y1="1097" x2="860" y2="1097" stroke="#1F2937" stroke-width="3" marker-end="url(#ar)"/>
+  <text x="792" y="1083" text-anchor="middle" font-size="22">promote</text>
+
+  <rect x="880" y="985" width="560" height="225" rx="14" fill="#ECFDF5" stroke="#059669" stroke-width="3" filter="url(#rough)"/>
+  <text x="910" y="1030" class="h" font-size="30" fill="#047857">STATIC (now)</text>
+  <text x="910" y="1074" class="code" font-size="24">YOUR_SERVER_IP</text>
+  <text x="910" y="1116" font-size="25">same number, reserved for you.</text>
+  <text x="910" y="1154" font-size="25">Survives stop / start / reboot.</text>
+  <text x="910" y="1192" font-size="25">Name: n8n-voice-agent-ip</text>
+  <path d="M1355,1050 L1380,1078 L1425,1012" fill="none" stroke="#059669" stroke-width="7" stroke-linecap="round" filter="url(#rough)"/>
+
+  <rect x="150" y="1245" width="1290" height="140" rx="10" fill="#FFF7ED" stroke="#EA580C" stroke-width="3" filter="url(#rough)"/>
+  <text x="180" y="1290" font-size="27"><tspan font-weight="bold">Why it matters:</tspan> our URL  n8n.example.com  contains the IP.</text>
+  <text x="180" y="1330" font-size="27">New IP = the n8n link, the Dograh webhook and the Google login</text>
+  <text x="180" y="1368" font-size="27">redirect ALL break at once.</text>
+
+  <rect x="150" y="1420" width="1290" height="120" rx="6" fill="#FEF3C7" stroke="#D97706" stroke-width="3" filter="url(#rough)"/>
+  <text x="175" y="1453" font-size="20" fill="#92400E" font-weight="bold">COMMAND</text>
+  <text x="175" y="1489" class="code" font-size="23">gcloud compute addresses create n8n-voice-agent-ip \</text>
+  <text x="175" y="1521" class="code" font-size="23">  --addresses=YOUR_SERVER_IP --region=asia-south1</text>
+
+  <text x="150" y="1590" font-size="26"><tspan font-weight="bold" fill="#7C3AED">Trick:</tspan> --addresses= the IP the VM ALREADY has, so you keep the SAME number.</text>
+  <text x="150" y="1630" font-size="26">Leave it out and Google hands you a brand-new IP instead.</text>
+  <text x="150" y="1684" font-size="25"><tspan font-weight="bold">Click way:</tspan> VPC network &gt; IP addresses &gt; YOUR_SERVER_IP &gt; PROMOTE TO STATIC</text>
+  <text x="150" y="1738" font-size="25"><tspan font-weight="bold">Cost:</tspan> same as before while it is attached to a running VM.</text>
+  <text x="150" y="1776" font-size="25">Reserved but NOT used = you pay extra. Release it if you ever delete the VM.</text>
+
+  <text x="1440" y="1930" text-anchor="end" class="h" font-size="32" fill="#1E3A8A">next page: growing the disk  &#8594;</text>
+</svg>

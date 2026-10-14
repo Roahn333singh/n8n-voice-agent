@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="#1F2937" width="1500" height="2000" viewBox="0 0 1500 2000">
+  <defs>
+    <filter id="rough" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="17" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <pattern id="ruled" width="1500" height="44" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="43" x2="1500" y2="43" stroke="#D6E6F5" stroke-width="2"/>
+    </pattern>
+    <marker id="ar" markerWidth="16" markerHeight="16" refX="12" refY="8" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L14,8 L0,16" fill="none" stroke="#1F2937" stroke-width="3"/></marker>
+    <marker id="arB" markerWidth="16" markerHeight="16" refX="12" refY="8" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L14,8 L0,16" fill="none" stroke="#2563EB" stroke-width="3"/></marker>
+    <style>
+      text { font-family: "Noteworthy", "Chalkboard SE", "Comic Sans MS", cursive; }
+      .h { font-family: "Marker Felt", "Chalkboard SE", cursive; }
+      .code { font-family: Menlo, monospace; white-space: pre; }
+    </style>
+  </defs>
+
+  <rect width="1500" height="2000" fill="#FFFDF4"/>
+  <rect y="150" width="1500" height="1850" fill="url(#ruled)"/>
+  <line x1="115" y1="0" x2="115" y2="2000" stroke="#F4A3A3" stroke-width="3"/>
+
+  <text x="150" y="92" class="h" font-size="58" fill="#1E3A8A">Backups: 3 safety nets + 1 key</text>
+  <text x="150" y="138" font-size="26" fill="#64748B">what is saved, where, and when   |   page 1 of 2</text>
+
+  <!-- A: timeline -->
+  <text x="150" y="215" class="h" font-size="38" fill="#7C3AED">One day of backups (IST)</text>
+  <line x1="180" y1="300" x2="1420" y2="300" stroke="#1F2937" stroke-width="4"/>
+  <g font-size="20" fill="#64748B" text-anchor="middle">
+    <line x1="180" y1="290" x2="180" y2="310" stroke="#1F2937" stroke-width="3"/><text x="180" y="340">00:00</text>
+    <line x1="490" y1="290" x2="490" y2="310" stroke="#1F2937" stroke-width="3"/><text x="490" y="340">06:00</text>
+    <line x1="800" y1="290" x2="800" y2="310" stroke="#1F2937" stroke-width="3"/><text x="800" y="340">12:00</text>
+    <line x1="1110" y1="290" x2="1110" y2="310" stroke="#1F2937" stroke-width="3"/><text x="1110" y="340">18:00</text>
+    <line x1="1420" y1="290" x2="1420" y2="310" stroke="#1F2937" stroke-width="3"/><text x="1420" y="340">24:00</text>
+  </g>
+  <circle cx="309" cy="300" r="14" fill="#16A34A"/>
+  <circle cx="479" cy="300" r="14" fill="#2563EB"/>
+  <text x="180" y="262" font-size="22" fill="#15803D" font-weight="bold">02:30 nightly backup</text>
+  <text x="490" y="262" font-size="22" fill="#1D4ED8" font-weight="bold">05:47 Google disk snapshot</text>
+  <text x="180" y="385" font-size="22">All day: every n8n run is saved in Postgres. Before a big change: a manual snapshot (restore point).</text>
+
+  <!-- B: where things live -->
+  <text x="150" y="460" class="h" font-size="38" fill="#7C3AED">Where each copy lives</text>
+  <rect x="150" y="485" width="700" height="420" rx="16" fill="#FFFFFF" stroke="#64748B" stroke-width="3" filter="url(#rough)"/>
+  <text x="175" y="527" class="h" font-size="28" fill="#475569">The VM's disk (30 GB)</text>
+  <g filter="url(#rough)" stroke-width="3">
+    <rect x="180" y="555" width="260" height="130" rx="12" fill="#DCFCE7" stroke="#16A34A"/>
+    <rect x="530" y="555" width="290" height="320" rx="12" fill="#FEF3C7" stroke="#D97706"/>
+  </g>
+  <text x="310" y="605" text-anchor="middle" class="h" font-size="26">Postgres</text>
+  <text x="310" y="642" text-anchor="middle" font-size="20" fill="#475569">the LIVE database</text>
+  <line x1="442" y1="620" x2="524" y2="620" stroke="#1F2937" stroke-width="3" marker-end="url(#ar)"/>
+  <text x="483" y="600" text-anchor="middle" font-size="18">02:30</text>
+  <text x="675" y="595" text-anchor="middle" class="h" font-size="24">NET 1: nightly file</text>
+  <text x="550" y="635" class="code" font-size="16">/var/backups/</text>
+  <text x="550" y="657" class="code" font-size="16">  voice-agent/</text>
+  <text x="550" y="695" font-size="19">n8n-db-DATE.sql.gz</text>
+  <text x="550" y="722" font-size="17" fill="#475569">(whole database)</text>
+  <text x="550" y="757" font-size="19">workflows-DATE.json</text>
+  <text x="550" y="784" font-size="17" fill="#475569">(readable workflows)</text>
+  <text x="550" y="830" font-size="19" fill="#92400E">kept 14 days</text>
+  <text x="180" y="730" font-size="20" fill="#B91C1C">Same disk as the live</text>
+  <text x="180" y="758" font-size="20" fill="#B91C1C">data: if the disk dies,</text>
+  <text x="180" y="786" font-size="20" fill="#B91C1C">net 1 dies with it.</text>
+  <text x="180" y="840" font-size="19" fill="#475569">script: scripts/backup.sh</text>
+  <text x="180" y="866" font-size="19" fill="#475569">timer: /etc/cron.d/...</text>
+
+  <path d="M960,560 C960,500 1060,480 1110,515 C1150,465 1270,465 1300,520 C1380,500 1440,560 1410,610 C1450,650 1410,720 1340,710 C1310,760 1180,760 1150,715 C1090,750 980,730 990,670 C930,650 920,580 960,560 Z" fill="#DBEAFE" stroke="#2563EB" stroke-width="3" filter="url(#rough)"/>
+  <text x="1185" y="565" text-anchor="middle" class="h" font-size="25" fill="#1D4ED8">NET 2: Google snapshots</text>
+  <text x="1185" y="602" text-anchor="middle" font-size="19">copy of the WHOLE disk, daily</text>
+  <text x="1185" y="632" text-anchor="middle" font-size="19">kept 14 days, stored in "asia"</text>
+  <text x="1185" y="662" text-anchor="middle" font-size="19">(outside the VM)</text>
+  <text x="1185" y="700" text-anchor="middle" font-size="18" fill="#475569">schedule: default-schedule-1</text>
+  <path d="M852,640 C890,640 905,620 935,610" stroke="#2563EB" stroke-width="3" fill="none" marker-end="url(#arB)"/>
+  <text x="868" y="680" font-size="18" fill="#1D4ED8">05:47</text>
+
+  <rect x="930" y="770" width="510" height="135" rx="14" fill="#EFF6FF" stroke="#2563EB" stroke-width="3" filter="url(#rough)"/>
+  <text x="955" y="810" class="h" font-size="24" fill="#1D4ED8">NET 3: restore points (manual)</text>
+  <text x="955" y="845" font-size="19">n8n-before-demo-upgrade-20261009</text>
+  <text x="955" y="875" font-size="19">n8n-before-step-3-20261011</text>
+
+  <rect x="150" y="930" width="1290" height="95" rx="14" fill="#F5F3FF" stroke="#7C3AED" stroke-width="3" filter="url(#rough)"/>
+  <text x="175" y="970" class="h" font-size="26" fill="#6D28D9">+ THE KEY: N8N_ENCRYPTION_KEY in your Mac's Passwords app</text>
+  <text x="175" y="1005" font-size="21">Backups hold credentials LOCKED with this key. No key = Google + Dograh logins can't be opened.</text>
+
+  <!-- C: matrix -->
+  <text x="150" y="1100" class="h" font-size="38" fill="#7C3AED">Which net saves you when...</text>
+  <rect x="150" y="1120" width="1290" height="60" fill="#EDE9FE"/>
+  <text x="170" y="1160" font-size="22" font-weight="bold">Problem</text>
+  <text x="890" y="1160" text-anchor="middle" font-size="21" font-weight="bold">Net 1 file</text>
+  <text x="1080" y="1160" text-anchor="middle" font-size="21" font-weight="bold">Net 2/3 snapshot</text>
+  <text x="1300" y="1160" text-anchor="middle" font-size="21" font-weight="bold">Key</text>
+  <g font-size="22">
+    <text x="170" y="1222">I broke or deleted a workflow</text>
+    <text x="170" y="1282">Bad import, database damaged</text>
+    <text x="170" y="1342">VM deleted or disk dead</text>
+    <text x="170" y="1402">Server hacked (ransomware)</text>
+    <text x="170" y="1462">Rebuild on a NEW server</text>
+    <text x="170" y="1522">Whole Google account / project lost</text>
+  </g>
+  <g font-size="30" text-anchor="middle" font-weight="bold">
+    <text x="890" y="1224" fill="#16A34A">&#10003;</text><text x="1080" y="1224" fill="#16A34A">&#10003;</text><text x="1300" y="1224" fill="#94A3B8">-</text>
+    <text x="890" y="1284" fill="#16A34A">&#10003;</text><text x="1080" y="1284" fill="#16A34A">&#10003;</text><text x="1300" y="1284" fill="#94A3B8">-</text>
+    <text x="890" y="1344" fill="#DC2626">&#10007;</text><text x="1080" y="1344" fill="#16A34A">&#10003;</text><text x="1300" y="1344" fill="#94A3B8">-</text>
+    <text x="890" y="1404" fill="#DC2626">&#10007;</text><text x="1080" y="1404" fill="#16A34A">&#10003;</text><text x="1300" y="1404" fill="#94A3B8">-</text>
+    <text x="890" y="1464" fill="#16A34A">&#10003;</text><text x="1080" y="1464" fill="#16A34A">&#10003;</text><text x="1300" y="1464" fill="#D97706">needed</text>
+    <text x="890" y="1524" fill="#DC2626">&#10007;</text><text x="1080" y="1524" fill="#DC2626">&#10007;</text><text x="1300" y="1524" fill="#94A3B8">-</text>
+  </g>
+  <g stroke="#CBD5E1" stroke-width="2">
+    <line x1="150" y1="1240" x2="1440" y2="1240"/><line x1="150" y1="1300" x2="1440" y2="1300"/>
+    <line x1="150" y1="1360" x2="1440" y2="1360"/><line x1="150" y1="1420" x2="1440" y2="1420"/>
+    <line x1="150" y1="1480" x2="1440" y2="1480"/><line x1="150" y1="1540" x2="1440" y2="1540"/>
+  </g>
+  <text x="150" y="1580" font-size="21" fill="#475569">Hacked server: pick a snapshot from BEFORE the attack (we keep 14 days). Last row = the gap we still have.</text>
+
+  <!-- D: 3-2-1 -->
+  <rect x="150" y="1620" width="1290" height="270" rx="14" fill="#ECFDF5" stroke="#059669" stroke-width="3" filter="url(#rough)"/>
+  <text x="175" y="1665" class="h" font-size="32" fill="#047857">The pro rule: 3 - 2 - 1</text>
+  <text x="175" y="1710" font-size="23"><tspan font-weight="bold">3</tspan> copies of the data   &#8594;   us: live DB + nightly file + snapshot   <tspan fill="#16A34A">&#10003;</tspan></text>
+  <text x="175" y="1750" font-size="23"><tspan font-weight="bold">2</tspan> different places        &#8594;   us: VM disk + Google snapshot storage   <tspan fill="#16A34A">&#10003;</tspan></text>
+  <text x="175" y="1790" font-size="23"><tspan font-weight="bold">1</tspan> copy far away (off-site) &#8594;   us: not yet, everything is in one Google project   <tspan fill="#DC2626">&#10007;</tspan></text>
+  <text x="175" y="1840" font-size="22" fill="#047857">Fine for a demo. For a paying client: also copy the nightly file somewhere else</text>
+  <text x="175" y="1872" font-size="22" fill="#047857">(a Cloud Storage bucket in another project, or your Google Drive).</text>
+
+  <text x="1440" y="1960" text-anchor="end" class="h" font-size="32" fill="#1E3A8A">next page: restoring + testing  &#8594;</text>
+</svg>

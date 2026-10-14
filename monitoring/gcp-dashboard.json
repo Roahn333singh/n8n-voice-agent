@@ -1,0 +1,156 @@
+{
+  "displayName": "n8n Voice Agent",
+  "mosaicLayout": {
+    "columns": 12,
+    "tiles": [
+      {
+        "xPos": 0,
+        "yPos": 0,
+        "width": 12,
+        "height": 8,
+        "widget": {
+          "title": "How to use this dashboard",
+          "text": {
+            "content": "## How to use\nHealth for VM **n8n-vm** (asia-south1-c): Caddy on 443, n8n in Docker.\nApp: https://n8n.example.com/\n\nSet the **time range** (top right). Hover a line for the value at that minute.\n\n### Annotations (top bar)\nMarkers **on the graphs**, not a metric. Types enabled: **Cloud Alerting** (an alert fired), **Service Health** (Google incident), **VM termination** (instance stopped/preempted).\nIf a spike lines up with a marker, that event happened at the same time. Click **Annotations** to turn types on or off.\n\n### What each graph is for\n- **CPU utilization** — load from n8n + Caddy. Sustained high (over ~80%) can slow voice/workflows.\n- **Network received** — inbound HTTPS/voice/webhooks on the VM. Drop toward 0 can mean traffic is not reaching the box.\n- **Network sent** — outbound replies (often larger for voice/audio). Compare with received.\n- **Disk writes** — Docker volume `n8n_data` and logs. Repeated spikes are normal; a climb that never drops can mean the disk is filling.\n- **Disk reads** — reading workflows/images from disk.\n\n### Guest graphs (Ops Agent)\n- **Memory % used** — RAM inside the VM. Climb toward 90%+ can OOM-kill n8n even if CPU looks fine.\n- **Disk % full** — how full `/dev/sda1` is. Near 90%+ n8n may fail to save executions.\n\n### n8n workflow graphs\n- **Active workflows**, **Production executions**, **Manual executions**.\n- Per-run success/fail: https://n8n.example.com/executions\n\n### Logs\nCaddy access/errors and n8n Docker stdout.",
+            "format": "MARKDOWN"
+          }
+        }
+      },
+      {
+        "xPos": 0,
+        "yPos": 8,
+        "width": 6,
+        "height": 4,
+        "widget": {
+          "title": "CPU utilization — n8n + Caddy load",
+          "xyChart": {
+            "dataSets": [
+              {
+                "timeSeriesQuery": {
+                  "timeSeriesFilter": {
+                    "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" AND resource.type=\"gce_instance\" AND metadata.system_labels.name=\"n8n-vm\"",
+                    "aggregation": {
+                      "alignmentPeriod": "60s",
+                      "perSeriesAligner": "ALIGN_MEAN"
+                    }
+                  }
+                },
+                "plotType": "LINE",
+                "minAlignmentPeriod": "60s"
+              }
+            ],
+            "yAxis": { "scale": "LINEAR" }
+          }
+        }
+      },
+      {
+        "xPos": 6,
+        "yPos": 8,
+        "width": 6,
+        "height": 4,
+        "widget": {
+          "title": "Network received — inbound HTTPS / voice",
+          "xyChart": {
+            "dataSets": [
+              {
+                "timeSeriesQuery": {
+                  "timeSeriesFilter": {
+                    "filter": "metric.type=\"compute.googleapis.com/instance/network/received_bytes_count\" AND resource.type=\"gce_instance\" AND metadata.system_labels.name=\"n8n-vm\"",
+                    "aggregation": {
+                      "alignmentPeriod": "60s",
+                      "perSeriesAligner": "ALIGN_MEAN"
+                    }
+                  }
+                },
+                "plotType": "LINE",
+                "minAlignmentPeriod": "60s"
+              }
+            ],
+            "yAxis": { "scale": "LINEAR" }
+          }
+        }
+      },
+      {
+        "xPos": 0,
+        "yPos": 12,
+        "width": 6,
+        "height": 4,
+        "widget": {
+          "title": "Disk writes — n8n_data + Docker",
+          "xyChart": {
+            "dataSets": [
+              {
+                "timeSeriesQuery": {
+                  "timeSeriesFilter": {
+                    "filter": "metric.type=\"compute.googleapis.com/instance/disk/write_bytes_count\" AND resource.type=\"gce_instance\" AND metadata.system_labels.name=\"n8n-vm\"",
+                    "aggregation": {
+                      "alignmentPeriod": "60s",
+                      "perSeriesAligner": "ALIGN_MEAN"
+                    }
+                  }
+                },
+                "plotType": "LINE",
+                "minAlignmentPeriod": "60s"
+              }
+            ],
+            "yAxis": { "scale": "LINEAR" }
+          }
+        }
+      },
+      {
+        "xPos": 6,
+        "yPos": 12,
+        "width": 6,
+        "height": 4,
+        "widget": {
+          "title": "Network sent — outbound replies",
+          "xyChart": {
+            "dataSets": [
+              {
+                "timeSeriesQuery": {
+                  "timeSeriesFilter": {
+                    "filter": "metric.type=\"compute.googleapis.com/instance/network/sent_bytes_count\" AND resource.type=\"gce_instance\" AND metadata.system_labels.name=\"n8n-vm\"",
+                    "aggregation": {
+                      "alignmentPeriod": "60s",
+                      "perSeriesAligner": "ALIGN_MEAN"
+                    }
+                  }
+                },
+                "plotType": "LINE",
+                "minAlignmentPeriod": "60s"
+              }
+            ],
+            "yAxis": { "scale": "LINEAR" }
+          }
+        }
+      },
+      {
+        "xPos": 0,
+        "yPos": 16,
+        "width": 6,
+        "height": 4,
+        "widget": {
+          "title": "Disk reads — workflows / images from disk",
+          "xyChart": {
+            "dataSets": [
+              {
+                "timeSeriesQuery": {
+                  "timeSeriesFilter": {
+                    "filter": "metric.type=\"compute.googleapis.com/instance/disk/read_bytes_count\" AND resource.type=\"gce_instance\" AND metadata.system_labels.name=\"n8n-vm\"",
+                    "aggregation": {
+                      "alignmentPeriod": "60s",
+                      "perSeriesAligner": "ALIGN_MEAN"
+                    }
+                  }
+                },
+                "plotType": "LINE",
+                "minAlignmentPeriod": "60s"
+              }
+            ],
+            "yAxis": { "scale": "LINEAR" }
+          }
+        }
+      }
+    ]
+  }
+}

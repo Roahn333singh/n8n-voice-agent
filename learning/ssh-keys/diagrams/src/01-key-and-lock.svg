@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="#1F2937" width="1500" height="2000" viewBox="0 0 1500 2000">
+  <defs>
+    <filter id="rough" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="11" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <pattern id="ruled" width="1500" height="44" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="43" x2="1500" y2="43" stroke="#D6E6F5" stroke-width="2"/>
+    </pattern>
+    <marker id="ar" markerWidth="16" markerHeight="16" refX="12" refY="8" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L14,8 L0,16" fill="none" stroke="#1F2937" stroke-width="3"/></marker>
+    <marker id="arG" markerWidth="16" markerHeight="16" refX="12" refY="8" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L14,8 L0,16" fill="none" stroke="#059669" stroke-width="3"/></marker>
+    <style>
+      text { font-family: "Noteworthy", "Chalkboard SE", "Comic Sans MS", cursive; }
+      .h { font-family: "Marker Felt", "Chalkboard SE", cursive; }
+      .code { font-family: Menlo, monospace; white-space: pre; }
+    </style>
+  </defs>
+
+  <rect width="1500" height="2000" fill="#FFFDF4"/>
+  <rect y="150" width="1500" height="1850" fill="url(#ruled)"/>
+  <line x1="115" y1="0" x2="115" y2="2000" stroke="#F4A3A3" stroke-width="3"/>
+
+  <text x="150" y="92" class="h" font-size="58" fill="#1E3A8A">SSH keys: the key and the lock</text>
+  <text x="150" y="138" font-size="26" fill="#64748B">how you (and Cursor) log in to the server   |   page 1 of 2</text>
+
+  <!-- A: key pair -->
+  <text x="150" y="215" class="h" font-size="38" fill="#7C3AED">One key pair = 2 files, made together, a perfect match</text>
+
+  <rect x="150" y="245" width="520" height="330" rx="16" fill="#EFF6FF" stroke="#2563EB" stroke-width="3" filter="url(#rough)"/>
+  <text x="175" y="290" class="h" font-size="30" fill="#1D4ED8">Your Mac</text>
+  <g filter="url(#rough)" stroke="#B45309" stroke-width="4" fill="#FDE68A">
+    <circle cx="250" cy="380" r="42"/>
+    <rect x="290" y="368" width="170" height="24" rx="4"/>
+    <rect x="420" y="392" width="16" height="30"/>
+    <rect x="445" y="392" width="16" height="22"/>
+  </g>
+  <circle cx="250" cy="380" r="14" fill="#EFF6FF" stroke="#B45309" stroke-width="3"/>
+  <text x="175" y="480" font-size="24" font-weight="bold" fill="#B91C1C">PRIVATE key = the key</text>
+  <text x="175" y="515" class="code" font-size="19">~/.ssh/id_ed25519</text>
+  <text x="175" y="552" font-size="22" fill="#B91C1C">never leaves your Mac, never shared</text>
+
+  <rect x="830" y="245" width="610" height="330" rx="16" fill="#ECFDF5" stroke="#059669" stroke-width="3" filter="url(#rough)"/>
+  <text x="855" y="290" class="h" font-size="30" fill="#047857">The server (VM)</text>
+  <g filter="url(#rough)" stroke-width="4">
+    <rect x="880" y="310" width="140" height="190" rx="6" fill="#FFFFFF" stroke="#64748B"/>
+    <path d="M1060,375 L1060,345 A35,32 0 0 1 1130,345 L1130,375" fill="none" stroke="#475569"/>
+    <rect x="1045" y="372" width="100" height="80" rx="10" fill="#A7F3D0" stroke="#047857"/>
+  </g>
+  <circle cx="1000" cy="410" r="7" fill="#64748B"/>
+  <circle cx="1095" cy="405" r="9" fill="#047857"/>
+  <rect x="1091" y="408" width="8" height="22" fill="#047857"/>
+  <text x="950" y="530" text-anchor="middle" font-size="19" fill="#64748B">the door</text>
+  <text x="1170" y="395" font-size="24" font-weight="bold" fill="#047857">PUBLIC key</text>
+  <text x="1170" y="430" font-size="24" font-weight="bold" fill="#047857">= the lock</text>
+  <text x="855" y="552" font-size="21" fill="#047857">sits in ~/.ssh/authorized_keys, safe to share</text>
+
+  <line x1="675" y1="400" x2="822" y2="400" stroke="#059669" stroke-width="4" marker-end="url(#arG)"/>
+  <text x="748" y="370" text-anchor="middle" font-size="21" fill="#047857">copy only</text>
+  <text x="748" y="440" text-anchor="middle" font-size="21" fill="#047857">the .pub</text>
+
+  <text x="150" y="625" font-size="24">Anyone may SEE the lock. Only the matching key opens it. One lock per person who may enter.</text>
+
+  <!-- B: handshake -->
+  <text x="150" y="715" class="h" font-size="38" fill="#7C3AED">How the login works (no password is ever sent)</text>
+  <g filter="url(#rough)" stroke-width="3">
+    <rect x="150" y="745" width="390" height="190" rx="14" fill="#ECFDF5" stroke="#059669"/>
+    <rect x="600" y="745" width="390" height="190" rx="14" fill="#EFF6FF" stroke="#2563EB"/>
+    <rect x="1050" y="745" width="390" height="190" rx="14" fill="#ECFDF5" stroke="#059669"/>
+  </g>
+  <text x="175" y="790" class="h" font-size="27" fill="#047857">1. Server</text>
+  <text x="175" y="830" font-size="23">"Prove it! Sign this</text>
+  <text x="175" y="864" font-size="23">random puzzle: 8f3a91..."</text>
+  <text x="175" y="905" font-size="19" fill="#64748B">(new puzzle every login)</text>
+  <text x="625" y="790" class="h" font-size="27" fill="#1D4ED8">2. Your Mac</text>
+  <text x="625" y="830" font-size="23">signs the puzzle with</text>
+  <text x="625" y="864" font-size="23">the PRIVATE key</text>
+  <text x="625" y="905" font-size="19" fill="#64748B">(the key itself stays home)</text>
+  <text x="1075" y="790" class="h" font-size="27" fill="#047857">3. Server</text>
+  <text x="1075" y="830" font-size="23">checks the signature</text>
+  <text x="1075" y="864" font-size="23">with the lock: match?</text>
+  <text x="1075" y="905" font-size="23" fill="#047857" font-weight="bold">&#10003; you are in</text>
+  <line x1="542" y1="840" x2="594" y2="840" stroke="#1F2937" stroke-width="3" marker-end="url(#ar)"/>
+  <line x1="992" y1="840" x2="1044" y2="840" stroke="#1F2937" stroke-width="3" marker-end="url(#ar)"/>
+  <text x="150" y="985" font-size="24">Only a signature travels over the internet. Steal it and it is useless: next login = new puzzle.</text>
+
+  <!-- C: what is on our VM -->
+  <text x="150" y="1075" class="h" font-size="38" fill="#7C3AED">What is inside the VM's .ssh folders (checked 11 Oct)</text>
+  <g filter="url(#rough)" stroke-width="3">
+    <rect x="150" y="1100" width="1290" height="105" rx="12" fill="#EFF6FF" stroke="#2563EB"/>
+    <rect x="150" y="1220" width="1290" height="105" rx="12" fill="#FEF3C7" stroke="#D97706"/>
+    <rect x="150" y="1340" width="1290" height="105" rx="12" fill="#F1F5F9" stroke="#64748B"/>
+  </g>
+  <text x="175" y="1142" class="code" font-size="21" font-weight="bold">/home/your-user/.ssh</text>
+  <text x="175" y="1180" font-size="22">1 lock: "your-user@your-laptop" (ed25519). The door Cursor uses for every command.</text>
+  <text x="175" y="1262" class="code" font-size="21" font-weight="bold">/home/your-user/.ssh</text>
+  <text x="175" y="1300" font-size="22">2 TEMPORARY locks made by the Console "SSH" button. They expire by themselves (expireOn).</text>
+  <text x="175" y="1382" class="code" font-size="21" font-weight="bold">/root/.ssh</text>
+  <text x="175" y="1420" font-size="22">empty. Nobody logs in as root directly; admins use sudo.</text>
+  <text x="150" y="1495" font-size="24" fill="#047857">&#10003; No private key is stored on the server. Good: a hacked server cannot leak your key.</text>
+
+  <!-- D: door rules -->
+  <text x="150" y="1585" class="h" font-size="38" fill="#7C3AED">The door rules (sshd settings)</text>
+  <g filter="url(#rough)" stroke-width="3">
+    <rect x="150" y="1615" width="400" height="150" rx="8" fill="#FEE2E2" stroke="#DC2626"/>
+    <rect x="595" y="1615" width="400" height="150" rx="8" fill="#FEE2E2" stroke="#DC2626"/>
+    <rect x="1040" y="1615" width="400" height="150" rx="8" fill="#DCFCE7" stroke="#16A34A"/>
+  </g>
+  <text x="350" y="1665" text-anchor="middle" class="h" font-size="30" fill="#B91C1C">Passwords: OFF</text>
+  <text x="350" y="1705" text-anchor="middle" font-size="21">nobody can guess</text>
+  <text x="350" y="1737" text-anchor="middle" font-size="21">their way in</text>
+  <text x="795" y="1665" text-anchor="middle" class="h" font-size="30" fill="#B91C1C">Root login: OFF</text>
+  <text x="795" y="1705" text-anchor="middle" font-size="21">log in as yourself,</text>
+  <text x="795" y="1737" text-anchor="middle" font-size="21">then "sudo" for admin</text>
+  <text x="1240" y="1665" text-anchor="middle" class="h" font-size="30" fill="#15803D">Keys: ON</text>
+  <text x="1240" y="1705" text-anchor="middle" font-size="21">only someone with a</text>
+  <text x="1240" y="1737" text-anchor="middle" font-size="21">matching key gets in</text>
+
+  <rect x="150" y="1800" width="1290" height="95" rx="10" fill="#F5F3FF" stroke="#7C3AED" stroke-width="2"/>
+  <text x="175" y="1840" class="h" font-size="26" fill="#6D28D9">Lost your Mac?</text>
+  <text x="175" y="1876" font-size="22">Remove its lock (Console &gt; VM &gt; Edit &gt; SSH Keys, delete the line). The door is closed in seconds.</text>
+
+  <text x="1440" y="1960" text-anchor="end" class="h" font-size="32" fill="#1E3A8A">next page: letting someone in (and out)  &#8594;</text>
+</svg>

@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="#0F172A" width="1600" height="1020" viewBox="0 0 1600 1020">
+  <defs>
+    <marker id="arrBlue" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto"><path d="M0,0 L14,7 L0,14 z" fill="#2563EB"/></marker>
+    <marker id="arrGreen" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto"><path d="M0,0 L14,7 L0,14 z" fill="#059669"/></marker>
+    <style>
+      text { font-family: -apple-system, "Helvetica Neue", Arial, sans-serif; }
+      .mono { font-family: Menlo, "SF Mono", Consolas, monospace; white-space: pre; }
+      .muted { fill: #475569; }
+    </style>
+  </defs>
+  <rect width="1600" height="1020" fill="#F8FAFC"/>
+
+  <text x="800" y="62" text-anchor="middle" font-size="34" font-weight="700">Two different keys, travelling in two different directions</text>
+  <text x="800" y="100" text-anchor="middle" font-size="19" class="muted">Every connection between two services has a sender (carries the key) and a receiver (owns the lock).</text>
+
+  <!-- n8n box -->
+  <rect x="50" y="150" width="330" height="700" rx="18" fill="#FFF1F4" stroke="#EA4B71" stroke-width="3"/>
+  <text x="215" y="200" text-anchor="middle" font-size="30" font-weight="700" fill="#BE123C">n8n</text>
+  <text x="215" y="230" text-anchor="middle" font-size="16" class="muted">your server (GCP VM)</text>
+
+  <rect x="75" y="275" width="280" height="190" rx="12" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="95" y="305" font-size="15" font-weight="700" fill="#2563EB">KEY #1 &#183; used to SEND</text>
+  <text x="95" y="335" font-size="16" font-weight="600">Credential:</text>
+  <text x="95" y="358" font-size="16">"Header Auth account"</text>
+  <text x="95" y="392" font-size="14" class="mono">X-API-Key</text>
+  <text x="95" y="414" font-size="14" class="mono">= dgr_xxxxxxxx</text>
+  <text x="95" y="446" font-size="14" class="muted">Attached to: HTTP Request node</text>
+
+  <rect x="75" y="590" width="280" height="215" rx="12" fill="#FFFFFF" stroke="#059669" stroke-width="2"/>
+  <text x="95" y="620" font-size="15" font-weight="700" fill="#059669">LOCK &#183; used to CHECK</text>
+  <text x="95" y="650" font-size="16" font-weight="600">Credential:</text>
+  <text x="95" y="673" font-size="16">"Dograh webhook secret"</text>
+  <text x="95" y="707" font-size="14" class="mono">Authorization</text>
+  <text x="95" y="729" font-size="14" class="mono">= Bearer 9f3c&#8230;e71a</text>
+  <text x="95" y="761" font-size="14" class="muted">Attached to: "Call Completed"</text>
+  <text x="95" y="782" font-size="14" class="muted">webhook node</text>
+
+  <!-- Dograh box -->
+  <rect x="1220" y="150" width="330" height="700" rx="18" fill="#F5F3FF" stroke="#7C3AED" stroke-width="3"/>
+  <text x="1385" y="200" text-anchor="middle" font-size="30" font-weight="700" fill="#6D28D9">Dograh</text>
+  <text x="1385" y="230" text-anchor="middle" font-size="16" class="muted">voice-agent platform</text>
+
+  <rect x="1245" y="275" width="280" height="190" rx="12" fill="#FFFFFF" stroke="#2563EB" stroke-width="2"/>
+  <text x="1265" y="305" font-size="15" font-weight="700" fill="#2563EB">LOCK &#183; used to CHECK</text>
+  <text x="1265" y="335" font-size="16">Dograh looks up the</text>
+  <text x="1265" y="358" font-size="16">X-API-Key in its database:</text>
+  <text x="1265" y="390" font-size="16">"Is this a real key for</text>
+  <text x="1265" y="413" font-size="16">Rohan's team?"</text>
+  <text x="1265" y="446" font-size="14" class="muted">Dograh created this key</text>
+
+  <rect x="1245" y="590" width="280" height="215" rx="12" fill="#FFFFFF" stroke="#059669" stroke-width="2"/>
+  <text x="1265" y="620" font-size="15" font-weight="700" fill="#059669">KEY #2 &#183; used to SEND</text>
+  <text x="1265" y="650" font-size="16" font-weight="600">Credential:</text>
+  <text x="1265" y="673" font-size="16">"n8n feedback receiver"</text>
+  <text x="1265" y="696" font-size="14" class="muted">type: bearer_token</text>
+  <text x="1265" y="729" font-size="14" class="mono">token = 9f3c&#8230;e71a</text>
+  <text x="1265" y="761" font-size="14" class="muted">Attached to: "Call completed"</text>
+  <text x="1265" y="782" font-size="14" class="muted">webhook node</text>
+
+  <!-- Row 1: outbound -->
+  <text x="800" y="245" text-anchor="middle" font-size="21" font-weight="700" fill="#1D4ED8">&#9312; n8n &#8594; Dograh : "Start a call for this customer"</text>
+  <text x="800" y="273" text-anchor="middle" font-size="16" class="muted">n8n is the SENDER, Dograh is the RECEIVER</text>
+  <line x1="385" y1="315" x2="1210" y2="315" stroke="#2563EB" stroke-width="5" marker-end="url(#arrBlue)"/>
+  <rect x="440" y="340" width="720" height="125" rx="12" fill="#EFF6FF" stroke="#93C5FD" stroke-width="2"/>
+  <text x="465" y="373" font-size="15" class="mono">POST https://api.dograh.com/api/v1/public/agent/6f72&#8230;</text>
+  <text x="465" y="403" font-size="15" class="mono" font-weight="700" fill="#1D4ED8">X-API-Key: dgr_xxxxxxxx</text>
+  <text x="465" y="433" font-size="15" class="mono">{ "phone_number": "+91&#8230;", "initial_context": {&#8230;} }</text>
+  <text x="800" y="495" text-anchor="middle" font-size="16" class="muted">Proves: "n8n is allowed to use Rohan's Dograh account (and spend its credits)."</text>
+
+  <!-- Row 2: inbound -->
+  <text x="800" y="560" text-anchor="middle" font-size="21" font-weight="700" fill="#047857">&#9313; Dograh &#8594; n8n : "Call finished, here are the results"</text>
+  <text x="800" y="588" text-anchor="middle" font-size="16" class="muted">Dograh is the SENDER, n8n is the RECEIVER</text>
+  <line x1="1215" y1="630" x2="390" y2="630" stroke="#059669" stroke-width="5" marker-end="url(#arrGreen)"/>
+  <rect x="440" y="655" width="720" height="125" rx="12" fill="#ECFDF5" stroke="#6EE7B7" stroke-width="2"/>
+  <text x="465" y="688" font-size="15" class="mono">POST https://n8n.example.com/webhook/dograh-call-completed</text>
+  <text x="465" y="718" font-size="15" class="mono" font-weight="700" fill="#047857">Authorization: Bearer 9f3c&#8230;e71a</text>
+  <text x="465" y="748" font-size="15" class="mono">{ "attempt_id": "734114", "nps": 7, "exact_quote": "&#8230;" }</text>
+  <text x="800" y="810" text-anchor="middle" font-size="16" class="muted">Proves: "this request really came from Dograh, not from a stranger who found the URL."</text>
+
+  <!-- Rule -->
+  <rect x="50" y="880" width="1500" height="110" rx="14" fill="#0F172A"/>
+  <text x="800" y="922" text-anchor="middle" font-size="21" font-weight="700" fill="#F8FAFC">Rule: the RECEIVER owns the lock and decides which header it requires. The SENDER carries the matching key.</text>
+  <text x="800" y="960" text-anchor="middle" font-size="18" fill="#CBD5E1">Each direction gets its own secret. Never reuse the Dograh API key (Key #1) as the webhook secret (Key #2).</text>
+</svg>

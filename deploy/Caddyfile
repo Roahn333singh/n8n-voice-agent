@@ -1,0 +1,19 @@
+{
+	email {$ACME_EMAIL}
+}
+
+{$DOMAIN} {
+	encode gzip
+
+	# Prometheus metrics stay private; the Ops Agent scrapes them on 127.0.0.1:5678.
+	handle /metrics* {
+		respond 404
+	}
+
+	reverse_proxy n8n:5678
+
+	log {
+		output stdout
+		format json
+	}
+}

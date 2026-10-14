@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="#1F2937" width="1500" height="2000" viewBox="0 0 1500 2000">
+  <defs>
+    <filter id="rough" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="9" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <pattern id="ruled" width="1500" height="44" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="43" x2="1500" y2="43" stroke="#D6E6F5" stroke-width="2"/>
+    </pattern>
+    <marker id="ar" markerWidth="16" markerHeight="16" refX="12" refY="8" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L14,8 L0,16" fill="none" stroke="#1F2937" stroke-width="3"/></marker>
+    <style>
+      text { font-family: "Noteworthy", "Chalkboard SE", "Comic Sans MS", cursive; }
+      .h { font-family: "Marker Felt", "Chalkboard SE", cursive; }
+      .code { font-family: Menlo, monospace; white-space: pre; }
+    </style>
+  </defs>
+
+  <rect width="1500" height="2000" fill="#FFFDF4"/>
+  <rect y="150" width="1500" height="1850" fill="url(#ruled)"/>
+  <line x1="115" y1="0" x2="115" y2="2000" stroke="#F4A3A3" stroke-width="3"/>
+
+  <text x="150" y="92" class="h" font-size="56" fill="#1E3A8A">Step 2 (cont.): alerts, demo sheet, deploying</text>
+  <text x="150" y="138" font-size="26" fill="#64748B">page 2 of 2</text>
+
+  <!-- error alerts -->
+  <text x="150" y="215" class="h" font-size="40" fill="#B91C1C">4. Error alerts: know when something breaks</text>
+  <g filter="url(#rough)" stroke-width="3">
+    <rect x="150" y="250" width="260" height="100" rx="12" fill="#FFFFFF" stroke="#1F2937"/>
+    <path d="M470,300 L500,262 L515,292 L548,255 L545,300 L580,290 L552,322 L585,345 L540,338 L530,372 L508,338 L475,352 L492,322 Z" fill="#FECACA" stroke="#DC2626"/>
+    <rect x="640" y="250" width="240" height="100" rx="12" fill="#FEE2E2" stroke="#DC2626"/>
+    <rect x="940" y="250" width="220" height="100" rx="12" fill="#FFFFFF" stroke="#1F2937"/>
+    <rect x="1220" y="250" width="220" height="100" rx="8" fill="#DCFCE7" stroke="#16A34A"/>
+  </g>
+  <text x="280" y="295" text-anchor="middle" font-size="24" font-weight="bold">Voice-Agent</text>
+  <text x="280" y="328" text-anchor="middle" font-size="20" fill="#64748B">a run fails</text>
+  <text x="760" y="295" text-anchor="middle" font-size="24" font-weight="bold">Error Trigger</text>
+  <text x="760" y="328" text-anchor="middle" font-size="19" fill="#64748B">"Error Alerts" workflow</text>
+  <text x="1050" y="310" text-anchor="middle" font-size="24">Log Error</text>
+  <text x="1330" y="295" text-anchor="middle" font-size="24" font-weight="bold">Errors tab</text>
+  <text x="1330" y="328" text-anchor="middle" font-size="19" fill="#64748B">time, node, message, link</text>
+  <line x1="588" y1="300" x2="634" y2="300" stroke="#1F2937" stroke-width="3" marker-end="url(#ar)"/>
+  <line x1="882" y1="300" x2="934" y2="300" stroke="#1F2937" stroke-width="3" marker-end="url(#ar)"/>
+  <line x1="1162" y1="300" x2="1214" y2="300" stroke="#1F2937" stroke-width="3" marker-end="url(#ar)"/>
+
+  <text x="150" y="405" font-size="25"><tspan font-weight="bold">Hook it up:</tspan> Voice-Agent &gt; Settings &gt; Error workflow = "Voice-Agent Error Alerts"</text>
+  <rect x="150" y="430" width="1290" height="135" rx="10" fill="#FFF7ED" stroke="#EA580C" stroke-width="3" filter="url(#rough)"/>
+  <text x="180" y="475" font-size="26"><tspan font-weight="bold" fill="#C2410C">Gotcha (n8n 2.x):</tspan> the error workflow must be PUBLISHED too.</text>
+  <text x="180" y="515" font-size="24">Otherwise the n8n log says: "Workflow ... is not active and cannot be executed"</text>
+  <text x="180" y="550" font-size="24">and nothing is logged. Found it on the first test, fixed with publish:workflow.</text>
+
+  <!-- demo sheet -->
+  <text x="150" y="650" class="h" font-size="40" fill="#B91C1C">5. A separate demo sheet</text>
+  <g filter="url(#rough)">
+    <rect x="150" y="680" width="700" height="300" fill="#FFFFFF" stroke="#16A34A" stroke-width="3"/>
+    <rect x="150" y="680" width="700" height="56" fill="#DCFCE7" stroke="#16A34A" stroke-width="3"/>
+  </g>
+  <line x1="150" y1="796" x2="850" y2="796" stroke="#BBF7D0" stroke-width="2"/>
+  <line x1="150" y1="856" x2="850" y2="856" stroke="#BBF7D0" stroke-width="2"/>
+  <line x1="150" y1="916" x2="850" y2="916" stroke="#BBF7D0" stroke-width="2"/>
+  <line x1="420" y1="680" x2="420" y2="980" stroke="#BBF7D0" stroke-width="2"/>
+  <line x1="620" y1="680" x2="620" y2="980" stroke="#BBF7D0" stroke-width="2"/>
+  <text x="170" y="718" font-size="22" font-weight="bold">customer</text>
+  <text x="440" y="718" font-size="22" font-weight="bold">permission</text>
+  <text x="640" y="718" font-size="22" font-weight="bold">queue_status</text>
+  <text x="170" y="776" font-size="22">Rohan Singh</text><text x="440" y="776" font-size="22">Yes</text><text x="640" y="776" font-size="22">Hold</text>
+  <text x="170" y="836" font-size="22">Priya Sharma</text><text x="440" y="836" font-size="22">Yes</text><text x="640" y="836" font-size="22">Hold</text>
+  <text x="170" y="896" font-size="22">Arjun Mehta</text><text x="440" y="896" font-size="22">Yes</text><text x="640" y="896" font-size="22">Hold</text>
+  <text x="170" y="956" font-size="22">Neha Kapoor</text><text x="440" y="956" font-size="22" fill="#DC2626" font-weight="bold">No</text><text x="640" y="956" font-size="22">Pending</text>
+
+  <text x="890" y="720" font-size="24">"Aurelia Voice Agent - DEMO"</text>
+  <text x="890" y="762" font-size="24">&#8226; all 4 use YOUR phone number</text>
+  <text x="890" y="804" font-size="24">&#8226; demo: flip Hold &#8594; Pending,</text>
+  <text x="910" y="840" font-size="24">phone rings within 1 minute</text>
+  <text x="890" y="882" font-size="24">&#8226; Neha: Pending but permission No</text>
+  <text x="910" y="918" font-size="24">&#8594; NEVER called (consent check!)</text>
+  <text x="890" y="960" font-size="24">&#8226; old sheet untouched = archive</text>
+
+  <!-- deploy commands -->
+  <text x="150" y="1065" class="h" font-size="40" fill="#B91C1C">6. How I pushed the changes (command way)</text>
+  <rect x="150" y="1090" width="1290" height="330" rx="6" fill="#FEF3C7" stroke="#D97706" stroke-width="3" filter="url(#rough)"/>
+  <text x="175" y="1132" class="code" font-size="21" fill="#92400E"># 1. backup first</text>
+  <text x="175" y="1164" class="code" font-size="21">n8n export:workflow --id=TXLzcvYVqXg831DW --output=backup.json</text>
+  <text x="175" y="1206" class="code" font-size="21" fill="#92400E"># 2. load the edited file (this switches the workflow OFF)</text>
+  <text x="175" y="1238" class="code" font-size="21">n8n import:workflow --input=wf_step2.json</text>
+  <text x="175" y="1280" class="code" font-size="21" fill="#92400E"># 3. make it the live version</text>
+  <text x="175" y="1312" class="code" font-size="21">n8n publish:workflow --id=TXLzcvYVqXg831DW</text>
+  <text x="175" y="1354" class="code" font-size="21" fill="#92400E"># 4. restart so the running n8n loads it (~10 s)</text>
+  <text x="175" y="1386" class="code" font-size="21">sudo docker restart n8n</text>
+  <text x="150" y="1462" font-size="24">n8n commands run inside the container:  <tspan class="code" font-size="20">sudo docker exec -u node n8n n8n ...</tspan></text>
+  <text x="150" y="1502" font-size="24"><tspan font-weight="bold">Click way:</tspan> edit in the n8n editor &gt; Save &gt; Publish (no restart needed).</text>
+
+  <!-- testing -->
+  <text x="150" y="1590" class="h" font-size="40" fill="#047857">7. How I tested (without calling anyone)</text>
+  <text x="150" y="1638" font-size="25">&#9312; Sent a fake "call completed" request with the secret header</text>
+  <text x="190" y="1676" font-size="25">&#8594; Feedback row, queue Completed, Call_Attempts filled &#8594; deleted test rows</text>
+  <text x="150" y="1722" font-size="25">&#9313; Temporary "Fail on purpose" workflow &#8594; 3 rows in Errors &#8594; switched it off</text>
+
+  <rect x="150" y="1760" width="1290" height="140" rx="10" fill="#FEF2F2" stroke="#DC2626" stroke-width="3" filter="url(#rough)"/>
+  <text x="180" y="1805" font-size="26"><tspan font-weight="bold" fill="#B91C1C">Got 403 at first!</tspan> n8n's credential value is already "Bearer 9f3c...".</text>
+  <text x="180" y="1845" font-size="25">My test added "Bearer " again = "Bearer Bearer 9f3c..." = no match.</text>
+  <text x="180" y="1882" font-size="25">Same lesson as the webhook-auth notes: values must match EXACTLY.</text>
+</svg>
